@@ -10,7 +10,7 @@ EasyStudy is an application designed to connect students with private teachers f
 - Posting Statuses: -- Post statuses related to the educational subject you teach to attract clients.
 
 ### Create an Account:
-- Build Your Profile:
+#### Build Your Profile:
   
 - Teachers: Showcase your expertise, education background, and add short lessons and statuses regarding your studies.
 - Students: Create a profile with your academic goals and subjects you need help with.
