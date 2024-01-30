@@ -3,6 +3,13 @@
 ## Description
 EasyStudy is an application designed to connect students with private teachers for personalized academic support. Whether you're a student in need of extra guidance or a teacher looking to share your knowledge, EasyStudy is the place to make those connections.
 
+## Team
+- Itamar Cohen
+- Eli Greenblatt
+- Evyatar Yossef
+- Naor Ladani
+- Roy Asraf
+- 
 ## Features
 - User Login/Registration: -- Sign up, create a profile, and add relevant details
 - Profile Design: -- Set up your profile based on the subject you need. 
