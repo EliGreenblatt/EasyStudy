@@ -9,7 +9,7 @@ EasyStudy is an application designed to connect students with private teachers f
 - Evyatar Yossef
 - Naor Ladani
 - Roy Asraf
-- 
+  
 ## Features
 - User Login/Registration: -- Sign up, create a profile, and add relevant details
 - Profile Design: -- Set up your profile based on the subject you need. 
