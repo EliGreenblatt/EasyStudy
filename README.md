@@ -1,7 +1,7 @@
 # Welcome to EasyStudy!
 
 ## Description
-EasyStudy is an application designed to connect students with private teachers for personalized academic support. Whether you're a student in need of extra guidance or a teacher looking to share your knowledge, EasyStudy is the place to make those connections.
+EasyStudy is an application designed to connect students with private teachers for personalized academic support. Whether you're a student in need of extra guidance or a teacher looking to share your knowledge and reach for students to teach, EasyStudy is the place to make those connections.
 
 ## Team
 - Itamar Cohen
