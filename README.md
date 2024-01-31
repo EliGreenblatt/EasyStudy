@@ -11,38 +11,17 @@ EasyStudy is an application designed to connect students with private teachers f
 - Roy Asraf
   
 ## Features
-- User Login/Registration: -- Sign up, create a profile, and add relevant details
-- Profile Design: -- Set up your profile based on the subject you need. 
-- Search: -- Search for the best teacher that suits your needs.
-- Posting Statuses: -- Post statuses related to the educational subject you teach to attract clients.
 
-### Create an Account:
-#### Build Your Profile:
-  
-- Teachers: Showcase your expertise, education background, and add short lessons and statuses regarding your studies.
-- Students: Create a profile with your academic goals and subjects you need help with.
+### Teachers:
+- Design Profile: Showcase your expertise, education background, and add short lessons and statuses regarding your studies.
+- Manage Appointments: View and manage their diary.
+- Read Reviews: Teachers will be able to view the student's feedbacks in order to be better and know what to improve in their teaching.
 
-- Search for Teachers:
-Students can browse through the profiles of teachers and find the perfect match for their academic needs.
-
--- Teachers can create detailed profiles with information about their qualifications, subjects, and teaching style.
-
--- Students can easily find teachers based on subjects.
-
--- Teachers can share short lessons and updates with their students.
-
-## For Teachers
-If you're a teacher, EasyStudy provides a platform to:
-
-- Expand your reach and connect with students seeking private lessons.
-- Showcase your expertise and teaching style through a comprehensive profile.
-- Share short lessons and status updates to engage with your student community.
-
-## For Students
-As a student, EasyStudy offers:
-
-- A convenient way to find qualified teachers for personalized lessons.
-- Access to a diverse pool of teachers based on subjects, availability, and location.
+### Students:
+- Look for a Teacher: Browse through the profiles of teachers and find the perfect match for your academic needs.
+- Make an Appointment: Apply for a specific day and hour you can perform the private lesson.
+- Give Feedback: Optional choice to give a feedback based on the private lesson performed.
+- Create your profile 
 
 ## Technology
 - Android Studio
