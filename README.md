@@ -16,7 +16,7 @@ EasyStudy is an application designed to connect students with private teachers f
 - **Create an Impressive Profile:** Showcase your expertise and educational background, also share short lessons and updates.
 - **Appointment Management:** Easily view and manage your schedule to streamline your availability.
 - **Insightful Feedback:** Access student reviews to continuously improve and tailor your teaching approach.
-- 
+  
 ### Students:
 - **Look for a Teacher:** Explore detailed profiles of teachers to find the ideal match for your academic needs.
 - **Appointment Scheduling:** Apply for private lessons on specific days and hours that suit your schedule.
