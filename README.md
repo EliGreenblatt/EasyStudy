@@ -13,14 +13,14 @@ EasyStudy is an application designed to connect students with private teachers f
 ## Features
 
 ### Teachers:
-- Design Profile: Showcase your expertise, education background, and add short lessons and statuses regarding your studies.
-- Manage Appointments: View and manage their diary.
-- Read Reviews: Teachers will be able to view the student's feedbacks in order to be better and know what to improve in their teaching.
-
+- **Create an Impressive Profile:** Showcase your expertise and educational background, also share short lessons and updates.
+- **Appointment Management:** Easily view and manage your schedule to streamline your availability.
+- **Insightful Feedback:** Access student reviews to continuously improve and tailor your teaching approach.
+  
 ### Students:
-- Look for a Teacher: Browse through the profiles of teachers and find the perfect match for your academic needs.
-- Make an Appointment: Apply for a specific day and hour you can perform the private lesson.
-- Give Feedback: Optional choice to give a feedback based on the private lesson performed.
+- **Look for a Teacher:** Explore detailed profiles of teachers to find the ideal match for your academic needs.
+- **Appointment Scheduling:** Apply for private lessons on specific days and hours that suit your schedule.
+- **Share Your Experience:** Provide valuable feedback based on your private lesson experience to contribute to the improvement of the learning process.
 
 ## Technology
 - Android Studio
