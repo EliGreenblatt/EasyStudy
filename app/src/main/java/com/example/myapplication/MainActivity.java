@@ -82,13 +82,13 @@ public class MainActivity extends AppCompatActivity
                 String password = userPassInputLayout.getEditText().getText().toString();
 
                 // Check if it's a teacher or student
-                if (teacher.isChecked()) {
-                    // If it's a teacher, check existence in Firebase
-                    EasyStudy.checkUserExists(username, password, MainActivity.this);
-                } else {
-                    // If it's a student, check existence in Firebase
-                    EasyStudy.checkUserExists(username, password, MainActivity.this);
-                }
+                EasyStudy.checkUserExists(username, password, MainActivity.this, new EasyStudy.UserTypeCallback() {
+                    @Override
+                    public void onUserType(EasyStudy.UserType userType) {
+                        // Navigate to the appropriate page based on user type
+                        EasyStudy.navigateToPage(MainActivity.this, userType);
+                    }
+                });
             }
         });
 

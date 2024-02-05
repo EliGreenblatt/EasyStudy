@@ -13,8 +13,41 @@ import android.content.Context;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
+import android.content.Intent;
+
+
 
 public class EasyStudy extends Application {
+
+    // Enum to represent user types
+    public enum UserType {
+        STUDENT,
+        TEACHER,
+        UNKNOWN
+    }
+
+    // Callback interface for user type
+    public interface UserTypeCallback {
+        void onUserType(UserType userType);
+    }
+
+    // Method to navigate to different pages based on user type
+    public static void navigateToPage(Context context, UserType userType) {
+        switch (userType) {
+            case STUDENT:
+                // Navigate to the student's profile page
+                context.startActivity(new Intent(context, StudentProfileActivity.class));
+                break;
+            case TEACHER:
+                // Navigate to the teacher's update profile page
+                // Example: context.startActivity(new Intent(context, TeacherUpdateProfileActivity.class));
+                break;
+            case UNKNOWN:
+                // Navigate to the logout page or show an error message
+                // Example: context.startActivity(new Intent(context, LogoutActivity.class));
+                break;
+        }
+    }
 
     @Override
     public void onCreate() {
@@ -24,10 +57,42 @@ public class EasyStudy extends Application {
         FirebaseApp.initializeApp(this);
     }
 
-    // Add a student name to the "students" table in the Realtime Database
     public static void addStudent(Student student, Context context) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students");
 
+        // Check if the student with the same name already exists
+        databaseReference.orderByChild("name").equalTo(student.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!userExistsWithSamePassword(dataSnapshot, student.getPassword())) {
+                    // User does not exist, proceed to add
+                    addStudentToDatabase(student, databaseReference, context);
+                } else {
+                    // User with the same name already exists
+                    showErrorMessageDialog(context, "User with the same name and password already exists.");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Firebase", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+
+
+    // TODO: ADD THE SAME THING TO THE TEACHER ( ADD TEACHER AND ADD TEACHER TO DATABASE )
+    private static boolean userExistsWithSamePassword(DataSnapshot dataSnapshot, String password) {
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            Student existingStudent = snapshot.getValue(Student.class);
+            if (existingStudent != null && existingStudent.getPassword().equals(password)) {
+                return true; // User with the same name and password already exists
+            }
+        }
+        return false;
+    }
+
+        private static void addStudentToDatabase(Student student, DatabaseReference databaseReference, Context context) {
         // Generate a unique key for the new student
         String studentId = databaseReference.push().getKey();
 
@@ -56,32 +121,36 @@ public class EasyStudy extends Application {
                 .addOnFailureListener(e -> Log.e("Firebase", "Failed to add teacher", e));
     }
 
-    // Check if the user exists in the database based on username and password
-    public static void checkUserExists(String username, String password, Context context) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students");
+    public static void checkUserExists(String username, String password, Context context, UserTypeCallback callback) {
+        DatabaseReference studentsReference = FirebaseDatabase.getInstance().getReference("students");
+        DatabaseReference teachersReference = FirebaseDatabase.getInstance().getReference("teachers");
 
-        // Query the database to check if the username and password exist
-        databaseReference.orderByChild("name").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
+        // Check in the students table
+        studentsReference.orderByChild("name").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // User exists, now check the password
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Student student = snapshot.getValue(Student.class);
-                        if (student != null && student.getPassword().equals(password)) {
-                            // Password matches, perform logic here
-                            Log.d("Firebase", "User exists with matching password");
-                            EasyStudy.showInfoMessageDialog(context, "Proceeding to the feed");
-                            return;
-                        }
-                    }
-                    // Password doesn't match
-                    showErrorMessageDialog(context, "Incorrect password. Please try again.");
+                    // User exists as a student
+                    callback.onUserType(UserType.STUDENT);
                 } else {
-                    // User doesn't exist
-                    Log.d("Firebase", "User does not exist");
+                    // User not found in students, check in teachers
+                    teachersReference.orderByChild("name").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                // User exists as a teacher
+                                callback.onUserType(UserType.TEACHER);
+                            } else {
+                                // User not found in teachers as well
+                                callback.onUserType(UserType.UNKNOWN);
+                            }
+                        }
 
-                    showErrorMessageDialog(context, "User does not exist. Please check your credentials.");
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.e("Firebase", "Database error: " + databaseError.getMessage());
+                        }
+                    });
                 }
             }
 
@@ -91,6 +160,43 @@ public class EasyStudy extends Application {
             }
         });
     }
+
+    // Check if the user exists in the database based on username and password
+//    public static void checkUserExists(String username, String password, Context context) {
+//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students");
+//
+//        // Query the database to check if the username and password exist
+//        databaseReference.orderByChild("name").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    // User exists, now check the password
+//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                        Student student = snapshot.getValue(Student.class);
+//                        if (student != null && student.getPassword().equals(password)) {
+//                            // Password matches, perform logic here
+//                            Log.d("Firebase", "User exists with matching password");
+//                            EasyStudy.showInfoMessageDialog(context, "Proceeding to the feed");
+//                            return;
+//                        }
+//                    }
+//                    // Password doesn't match
+//                    showErrorMessageDialog(context, "Incorrect password. Please try again.");
+//                } else {
+//                    // User doesn't exist
+//                    Log.d("Firebase", "User does not exist");
+//
+//                    showErrorMessageDialog(context, "User does not exist. Please check your credentials.");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.e("Firebase", "Database error: " + databaseError.getMessage());
+//            }
+//        });
+//    }
+
     private static void showErrorMessageDialog(Context context, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Error")
