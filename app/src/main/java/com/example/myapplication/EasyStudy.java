@@ -11,7 +11,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import android.content.Context;
 import android.app.AlertDialog;
-
+import android.content.DialogInterface;
 
 
 public class EasyStudy extends Application {
@@ -93,7 +93,21 @@ public class EasyStudy extends Application {
                 .show();
     }
 
+
     public static void showInfoMessageDialog(Context context, String message) {
         showDialog(context, "Info", message);
+    }
+
+    private static void showDialog(Context context, String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 }
