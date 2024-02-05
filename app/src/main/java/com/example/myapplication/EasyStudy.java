@@ -7,10 +7,12 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class EasyStudy extends Application {
+public class EasyStudy extends Application
+{
 
     @Override
-    public void onCreate() {
+    public void onCreate()
+    {
         super.onCreate();
 
         // Initialize Firebase
@@ -18,7 +20,8 @@ public class EasyStudy extends Application {
     }
 
     // Add a student name to the "students" table in the Realtime Database
-    public static void addStudent(String studentName) {
+    public static void addStudent(String studentName)
+    {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students");
 
         // Generate a unique key for the new student
