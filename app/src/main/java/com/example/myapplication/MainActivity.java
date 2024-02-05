@@ -12,6 +12,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Add a student's name to the "students" table
-        EasyStudy.addStudent("evyatar");
+        EasyStudy.addStudent("eli");
     }
 }
