@@ -65,7 +65,7 @@ public class EasyStudy extends Application {
                         if (student != null && student.getPassword().equals(password)) {
                             // Password matches, perform logic here
                             Log.d("Firebase", "User exists with matching password");
-                            showErrorMessageDialog(context, "Proceeding to the feed");
+                            EasyStudy.showInfoMessageDialog(context, "Proceeding to the feed");
                             return;
                         }
                     }
@@ -91,5 +91,9 @@ public class EasyStudy extends Application {
                 .setMessage(message)
                 .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                 .show();
+    }
+
+    public static void showInfoMessageDialog(Context context, String message) {
+        showDialog(context, "Info", message);
     }
 }
