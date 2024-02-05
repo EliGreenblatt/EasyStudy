@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.widget.CheckBox;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.List;
+import java.util.ArrayList;
+
+
+
 public class MainActivity extends AppCompatActivity
 {
     private static final String TAG = "MainActivity";
@@ -42,12 +47,6 @@ public class MainActivity extends AppCompatActivity
                 Log.i(TAG,"Login button clicked");
                 hideButtons();
                 showTextFields();
-
-//                // Get the entered username
-//                String username = usernameInputLayout.getEditText().getText().toString();
-//
-//                // Check if the username exists in the database
-//                EasyStudy.checkUserExists(username);
             }
         });
 
@@ -58,12 +57,18 @@ public class MainActivity extends AppCompatActivity
                 // Handle Login button click
                 Log.i(TAG,"Second Login Pressed");
 
-                // Get the entered username
+                // Get the entered username and password
                 String username = usernameInputLayout.getEditText().getText().toString();
+                String password = userPassInputLayout.getEditText().getText().toString();
 
-                // Check if the username exists in the database
-                EasyStudy.checkUserExists(username, MainActivity.this);
-
+                // Check if it's a teacher or student
+                if (teacher.isChecked()) {
+                    // If it's a teacher, check existence in Firebase
+                    EasyStudy.checkUserExists(username, password, MainActivity.this);
+                } else {
+                    // If it's a student, check existence in Firebase
+                    EasyStudy.checkUserExists(username, password, MainActivity.this);
+                }
             }
         });
 
@@ -92,7 +97,26 @@ public class MainActivity extends AppCompatActivity
                 String username = usernameInputLayout.getEditText().getText().toString();
                 String password = userPassInputLayout.getEditText().getText().toString();
 
-                EasyStudy.addStudent(username);
+                // Check if it's a teacher or student
+                if (teacher.isChecked()) {
+                    // If it's a teacher, gather additional information
+                    String phone = ""; // Get teacher's phone from UI element
+                    String email = ""; // Get teacher's email from UI element
+                    String shortBio = ""; // Get teacher's shortBio from UI element
+                    List<String> subjects = new ArrayList<>(); // Get teacher's subjects from UI element
+
+                    // Create a Teacher object
+                    Teacher newTeacher = new Teacher(null, password, username, phone, email, shortBio, subjects);
+
+                    // Add the teacher to Firebase
+                    EasyStudy.addTeacher(newTeacher);
+                } else {
+                    // If it's a student, create a Student object
+                    Student newStudent = new Student(username, password, 0, "", "", "");
+
+                    // Add the student to Firebase
+                    EasyStudy.addStudent(newStudent);
+                }
             }
         });
         
