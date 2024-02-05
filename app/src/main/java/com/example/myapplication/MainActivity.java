@@ -42,6 +42,12 @@ public class MainActivity extends AppCompatActivity
                 Log.i(TAG,"Login button clicked");
                 hideButtons();
                 showTextFields();
+
+//                // Get the entered username
+//                String username = usernameInputLayout.getEditText().getText().toString();
+//
+//                // Check if the username exists in the database
+//                EasyStudy.checkUserExists(username);
             }
         });
 
@@ -51,6 +57,13 @@ public class MainActivity extends AppCompatActivity
             {
                 // Handle Login button click
                 Log.i(TAG,"Second Login Pressed");
+
+                // Get the entered username
+                String username = usernameInputLayout.getEditText().getText().toString();
+
+                // Check if the username exists in the database
+                EasyStudy.checkUserExists(username, MainActivity.this);
+
             }
         });
 
@@ -69,13 +82,17 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Handle Login button click
                 Log.i(TAG,"Register button clicked second time");
-               // Add logic that registers do the database
+
+                // Get the entered username and password
+                String username = usernameInputLayout.getEditText().getText().toString();
+                String password = userPassInputLayout.getEditText().getText().toString();
+
+                EasyStudy.addStudent(username);
             }
         });
         
