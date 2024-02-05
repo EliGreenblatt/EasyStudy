@@ -21,11 +21,11 @@ public class MainActivity extends AppCompatActivity
     Button registerButton;
     Button login;
     Button register;
+    Button backButton;
     TextInputLayout usernameInputLayout;
     TextInputLayout userPassInputLayout;
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -40,6 +40,25 @@ public class MainActivity extends AppCompatActivity
         teacher.setVisibility(View.GONE);
         register.setVisibility(View.GONE);
         hideTextFields();
+
+        backButton = findViewById(R.id.backButton);
+        backButton.setVisibility(View.GONE);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle back button click
+                Log.i(TAG, "Back button clicked");
+                showButtons();
+                hideBack();
+                hideTextFields();
+                backButton.setVisibility(View.GONE);
+                usernameInputLayout.getEditText().setText(""); // Clear entered username
+                userPassInputLayout.getEditText().setText(""); // Clear entered password
+            }
+
+        });
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,6 +66,7 @@ public class MainActivity extends AppCompatActivity
                 Log.i(TAG,"Login button clicked");
                 hideButtons();
                 showTextFields();
+                backButton.setVisibility(View.VISIBLE); // Show the back button
             }
         });
 
@@ -84,6 +104,7 @@ public class MainActivity extends AppCompatActivity
                 login.setVisibility(View.GONE);
                 teacher.setVisibility(View.VISIBLE);
                 register.setVisibility(View.VISIBLE);
+                backButton.setVisibility(View.VISIBLE); // Show the back button
             }
         });
 
@@ -109,13 +130,13 @@ public class MainActivity extends AppCompatActivity
                     Teacher newTeacher = new Teacher(null, password, username, phone, email, shortBio, subjects);
 
                     // Add the teacher to Firebase
-                    EasyStudy.addTeacher(newTeacher);
+                    EasyStudy.addTeacher(newTeacher, MainActivity.this);
                 } else {
                     // If it's a student, create a Student object
                     Student newStudent = new Student(username, password, 0, "", "", "");
 
                     // Add the student to Firebase
-                    EasyStudy.addStudent(newStudent);
+                    EasyStudy.addStudent(newStudent, MainActivity.this);
                 }
             }
         });
@@ -141,5 +162,17 @@ public class MainActivity extends AppCompatActivity
     {
         loginButton.setVisibility(View.GONE);
         registerButton.setVisibility(View.GONE);
+
+    }
+
+    private void hideBack()
+    {
+        register.setVisibility(View.GONE);
+        teacher.setVisibility(View.GONE);
+    }
+
+    private void showButtons() {
+        loginButton.setVisibility(View.VISIBLE);
+        registerButton.setVisibility(View.VISIBLE);
     }
 }

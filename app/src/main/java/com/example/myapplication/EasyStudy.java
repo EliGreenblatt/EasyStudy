@@ -25,20 +25,23 @@ public class EasyStudy extends Application {
     }
 
     // Add a student name to the "students" table in the Realtime Database
-    public static void addStudent(Student student) {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students");
+    public static void addStudent(Student student, Context context) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students");
 
         // Generate a unique key for the new student
         String studentId = databaseReference.push().getKey();
 
         // Add the student name to the database
         databaseReference.child(studentId).setValue(student)
-                .addOnSuccessListener(aVoid -> Log.d("Firebase", "Student added successfully"))
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firebase", "Student added successfully");
+                    EasyStudy.showInfoMessageDialog(context, "You have registered successfully to the screen");
+                })
                 .addOnFailureListener(e -> Log.e("Firebase", "Failed to add student", e));
     }
 
     // Add a teacher to the "teachers" table in the Realtime Database
-    public static void addTeacher(Teacher teacher) {
+    public static void addTeacher(Teacher teacher, Context context) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("teachers");
 
         // Generate a unique key for the new teacher
@@ -46,7 +49,10 @@ public class EasyStudy extends Application {
 
         // Add the teacher object to the database
         databaseReference.child(teacherId).setValue(teacher)
-                .addOnSuccessListener(aVoid -> Log.d("Firebase", "Teacher added successfully"))
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firebase", "Teacher added successfully");
+                    EasyStudy.showInfoMessageDialog(context, "You have registered successfully to the screen");
+                })
                 .addOnFailureListener(e -> Log.e("Firebase", "Failed to add teacher", e));
     }
 
