@@ -25,31 +25,54 @@ public class EasyStudy extends Application {
     }
 
     // Add a student name to the "students" table in the Realtime Database
-    public static void addStudent(String studentName) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students");
+    public static void addStudent(Student student) {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students");
 
         // Generate a unique key for the new student
         String studentId = databaseReference.push().getKey();
 
         // Add the student name to the database
-        databaseReference.child(studentId).child("name").setValue(studentName)
+        databaseReference.child(studentId).setValue(student)
                 .addOnSuccessListener(aVoid -> Log.d("Firebase", "Student added successfully"))
                 .addOnFailureListener(e -> Log.e("Firebase", "Failed to add student", e));
     }
 
-    // Check if the user exists in the database
-    public static void checkUserExists(String username, Context context) {
+    // Add a teacher to the "teachers" table in the Realtime Database
+    public static void addTeacher(Teacher teacher) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("teachers");
+
+        // Generate a unique key for the new teacher
+        String teacherId = databaseReference.push().getKey();
+
+        // Add the teacher object to the database
+        databaseReference.child(teacherId).setValue(teacher)
+                .addOnSuccessListener(aVoid -> Log.d("Firebase", "Teacher added successfully"))
+                .addOnFailureListener(e -> Log.e("Firebase", "Failed to add teacher", e));
+    }
+
+    // Check if the user exists in the database based on username and password
+    public static void checkUserExists(String username, String password, Context context) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students");
 
-        // Query the database to check if the username exists
+        // Query the database to check if the username and password exist
         databaseReference.orderByChild("name").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // User exists, perform logic here
-                    Log.d("Firebase", "User exists");
+                    // User exists, now check the password
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Student student = snapshot.getValue(Student.class);
+                        if (student != null && student.getPassword().equals(password)) {
+                            // Password matches, perform logic here
+                            Log.d("Firebase", "User exists with matching password");
+                            showErrorMessageDialog(context, "Proceeding to the feed");
+                            return;
+                        }
+                    }
+                    // Password doesn't match
+                    showErrorMessageDialog(context, "Incorrect password. Please try again.");
                 } else {
-                    // User doesn't exist, perform logic here
+                    // User doesn't exist
                     Log.d("Firebase", "User does not exist");
 
                     showErrorMessageDialog(context, "User does not exist. Please check your credentials.");
