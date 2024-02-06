@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity
                             {
                                 // If it's a teacher, gather additional information
                                 String phone = ""; // Get teacher's phone from UI element
-                                //String email = ""; // Get teacher's email from UI element
+                                String age = "25"; // Get teacher's email from UI element
                                 String email = userEmailInputLayout.getEditText().getText().toString();
                                 String shortBio = ""; // Get teacher's shortBio from UI element
                                 List<String> subjects = new ArrayList<>(); // Get teacher's subjects
@@ -164,14 +164,15 @@ public class MainActivity extends AppCompatActivity
                                 }
 
                                 // Create a Teacher object
-                                Teacher newTeacher = new Teacher(username, password, username, phone, email, shortBio, subjects);
+                                Teacher newTeacher = new Teacher(username, password, age, phone, email, shortBio, subjects);
 
                                 // Add the teacher to Firebase
                                 EasyStudy.addTeacher(newTeacher, MainActivity.this);
                             } else {
+                                String age = "25";
 
                                 // If it's a student, create a Student object
-                                Student newStudent = new Student(username, password, 0, "", email, "");
+                                Student newStudent = new Student(username, password, age, "", email, "");
 
                                 // Add the student to Firebase
                                 EasyStudy.addStudent(newStudent, MainActivity.this);

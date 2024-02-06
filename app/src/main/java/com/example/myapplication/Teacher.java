@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Teacher {
     private String name;
+    private String age;
     private String password;
     private String phone;
     private String email;
@@ -14,9 +15,10 @@ public class Teacher {
     public Teacher() {
     }
 
-    public Teacher(String teacherId,String password ,String name, String phone, String email, String shortBio, List<String> subjects) {
+    public Teacher(String name,String password ,String age, String phone, String email, String shortBio, List<String> subjects) {
         this.name = name;
         this.password = password;
+        this.age = age;
         this.phone = phone;
         this.email = email;
         this.shortBio = shortBio;
@@ -46,6 +48,8 @@ public class Teacher {
     public List<String> getSubjects() {
         return subjects;
     }
+
+    public String getAge() { return age; }
 
     // TODO: Add getters and setters for other attributes
 }

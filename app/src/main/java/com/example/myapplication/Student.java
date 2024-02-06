@@ -2,7 +2,7 @@ package com.example.myapplication;
 public class Student {
     private String name;
     private String password;
-    private int age;
+    private String age;
     private String phone;
     private String email;
     private String shortBio;
@@ -11,7 +11,7 @@ public class Student {
     public Student() {
     }
 
-    public Student( String name,String password ,int age, String phone, String email, String shortBio) {
+    public Student( String name,String password ,String age, String phone, String email, String shortBio) {
         this.name = name;
         this.password = password;
         this.age = age;
@@ -26,7 +26,7 @@ public class Student {
         return name;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 

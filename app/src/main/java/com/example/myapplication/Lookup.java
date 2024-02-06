@@ -44,9 +44,22 @@ public class Lookup extends AppCompatActivity
         // table for a match
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
+                // Get the input values
+                String name = nameText.getText().toString().trim();
+                String age = ageText.getText().toString().trim();
+                String subject = subjectText.getText().toString().trim();
 
+                // Create an Intent to start FoundActivity
+                Intent intent = new Intent(Lookup.this, FoundActivity.class);
+
+                // Put the data into the Intent
+                intent.putExtra("AGE", age);
+                intent.putExtra("NAME", name);
+                intent.putExtra("SUBJECT", subject);
+
+                // Start FoundActivity with the Intent
+                startActivity(intent);
             }
         });
 
