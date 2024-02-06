@@ -29,6 +29,7 @@
             android:exported="true">
             <!-- Add any necessary intent filters or other attributes here -->
         </activity>
+        <activity android:name=".TeacherProfileActivity"/>
 
     </application>
 

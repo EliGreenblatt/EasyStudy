@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Application;
 import android.util.Log;
 import com.google.firebase.FirebaseApp;
@@ -28,7 +30,7 @@ public class EasyStudy extends Application {
 
     // Callback interface for user type
     public interface UserTypeCallback {
-        void onUserType(UserType userType);
+        void onUserType(UserType userType, int i);
     }
 
     // Method to navigate to different pages based on user type
@@ -40,7 +42,10 @@ public class EasyStudy extends Application {
                 break;
             case TEACHER:
                 // Navigate to the teacher's update profile page
+                Log.i(TAG,"teacherrrrrrrrrrrrrrrrrr");
+
                 context.startActivity(new Intent(context, TeacherProfileActivity.class));
+
                 break;
             case UNKNOWN:
                 // Navigate to the logout page or show an error message
@@ -131,7 +136,7 @@ public class EasyStudy extends Application {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     // User exists as a student
-                    callback.onUserType(UserType.STUDENT);
+                    callback.onUserType(UserType.STUDENT, 1); // Return 1 for student
                 } else {
                     // User not found in students, check in teachers
                     teachersReference.orderByChild("name").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -139,10 +144,10 @@ public class EasyStudy extends Application {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
                                 // User exists as a teacher
-                                callback.onUserType(UserType.TEACHER);
+                                callback.onUserType(UserType.TEACHER, 0); // Return 0 for teacher
                             } else {
                                 // User not found in teachers as well
-                                callback.onUserType(UserType.UNKNOWN);
+                                callback.onUserType(UserType.UNKNOWN, -1); // Return -1 for unknown
                             }
                         }
 
