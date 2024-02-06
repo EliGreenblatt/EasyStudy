@@ -126,12 +126,12 @@ public class EasyStudy extends Application {
                 .addOnFailureListener(e -> Log.e("Firebase", "Failed to add teacher", e));
     }
 
-    public static void checkUserExists(String userId, Context context, UserTypeCallback callback) {
+    public static void checkUserExists(String username, String password, Context context, UserTypeCallback callback) {
         DatabaseReference studentsReference = FirebaseDatabase.getInstance().getReference("students");
         DatabaseReference teachersReference = FirebaseDatabase.getInstance().getReference("teachers");
 
         // Check in the students table
-        studentsReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        studentsReference.orderByChild("name").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -139,7 +139,7 @@ public class EasyStudy extends Application {
                     callback.onUserType(UserType.STUDENT, 1); // Return 1 for student
                 } else {
                     // User not found in students, check in teachers
-                    teachersReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    teachersReference.orderByChild("name").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
@@ -148,6 +148,7 @@ public class EasyStudy extends Application {
                             } else {
                                 // User not found in teachers as well
                                 showErrorMessageDialog(context, "User not registered in the database");
+
                                 callback.onUserType(UserType.UNKNOWN, -1); // Return -1 for unknown
 
                             }

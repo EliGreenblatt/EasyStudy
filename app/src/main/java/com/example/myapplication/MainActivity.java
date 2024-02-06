@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
                 String password = userPassInputLayout.getEditText().getText().toString();
 
                 // Check if it's a teacher or student
-                EasyStudy.checkUserExists(username, MainActivity.this, new EasyStudy.UserTypeCallback() {
+                EasyStudy.checkUserExists(username, password, MainActivity.this, new EasyStudy.UserTypeCallback() {
                     @Override
                     public void onUserType(EasyStudy.UserType userType, int i) {
                         // Determine the user type based on the integer i
