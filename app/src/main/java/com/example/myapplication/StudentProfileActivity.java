@@ -18,17 +18,17 @@ public class StudentProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_profile);
 
-        EditText subjectLookupEditText = findViewById(R.id.subjectLookupEditText);
         Button updateProfileButton = findViewById(R.id.updateProfileButton);
         Button logoutButton = findViewById(R.id.logoutButton);
 
         Button searchButton = findViewById(R.id.searchButton);
-        // Handle "Search" button click
+        // On search button click we go to a page where we can there filter accordingly
+        // and find the teachers
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Add your logic to perform the search operation
-                // Example: performSearch();
+                Intent intent = new Intent(StudentProfileActivity.this, Lookup.class);
+                startActivity(intent);
             }
         });
 

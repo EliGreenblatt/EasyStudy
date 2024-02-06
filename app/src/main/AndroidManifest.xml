@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Update"></activity>
+        <activity android:name=".Lookup"></activity>
 
         <!-- Add the following lines for StudentProfileActivity -->
         <activity
