@@ -21,14 +21,12 @@ import androidx.annotation.NonNull;
 
 
 public class EasyStudy extends Application {
-
     // Enum to represent user types
     public enum UserType {
         STUDENT,
         TEACHER,
         UNKNOWN
     }
-
     // Callback interface for user type
     public interface UserTypeCallback {
         void onUserType(UserType userType, int i);
