@@ -8,44 +8,25 @@ import android.os.Bundle;
 import android.widget.CheckBox;
 import com.google.android.material.textfield.TextInputLayout;
 
-//import android.widget.ArrayAdapter;
 import java.util.List;
 import java.util.ArrayList;
 
-import android.widget.Spinner;
-//import android.text.TextUtils;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.CompoundButton;
-
 
 public class MainActivity extends AppCompatActivity
 {
     private static final String TAG = "MainActivity";
     CheckBox teacher;
-    Button loginButton;
-    Button registerButton;
-    Button login;
-    Button register;
-    Button backButton;
-    TextInputLayout usernameInputLayout;
-    TextInputLayout userPassInputLayout;
-    TextInputLayout userEmailInputLayout;
-    Spinner subjectSpinner;
+    Button loginButton, registerButton, login, register, backButton;
+    TextInputLayout usernameInputLayout, userPassInputLayout, userEmailInputLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        teacher = findViewById(R.id.checkBox); // Replace with your CheckBox ID
-        login = findViewById(R.id.login);
-        register = findViewById(R.id.register);
-        loginButton = findViewById(R.id.loginButton); // Grab the login button reference
-        registerButton = findViewById(R.id.registerButton); // Grab the register button reference
-        usernameInputLayout = findViewById(R.id.UsernameText); // Grab the input username text
-        userPassInputLayout = findViewById(R.id.PasswordText); // Grab the input user password text
-        userEmailInputLayout = findViewById(R.id.EmailText);
-        //subjectSpinner = findViewById(R.id.subjectSpinner);
+        initializeViews();
         MultiAutoCompleteTextView subjectSpinner = findViewById(R.id.subjectSpinner);
 
         // Add CheckBox listener
@@ -61,23 +42,12 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
         teacher.setVisibility(View.GONE);
         register.setVisibility(View.GONE);
         hideTextFields();
 
         backButton = findViewById(R.id.backButton);
         backButton.setVisibility(View.GONE);
-
-//        List<String> subjectsList = new ArrayList<>();
-//        subjectsList.add("Linear Algebra");
-//        subjectsList.add("Computer Science");
-//        subjectsList.add("Infi");
-//        subjectsList.add("Physics");
-//        subjectsList.add("Electronics");
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, subjectsList);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        subjectSpinner.setAdapter(adapter);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,12 +100,12 @@ public class MainActivity extends AppCompatActivity
                         } else {
                             // Unknown user type
                             userType = EasyStudy.UserType.UNKNOWN;
+                            EasyStudy.showErrorMessageDialog(MainActivity.this, "User is not registered in the system.");
                         }
 
                         // Navigate to the appropriate page based on user type
                         EasyStudy.navigateToPage(MainActivity.this, userType);
                     }
-
                 });
             }
         });
@@ -211,6 +181,18 @@ public class MainActivity extends AppCompatActivity
                 });
             }
         });
+    }
+
+    private void initializeViews()
+    {
+        teacher = findViewById(R.id.checkBox); // Replace with your CheckBox ID
+        login = findViewById(R.id.login);
+        register = findViewById(R.id.register);
+        loginButton = findViewById(R.id.loginButton); // Grab the login button reference
+        registerButton = findViewById(R.id.registerButton); // Grab the register button reference
+        usernameInputLayout = findViewById(R.id.UsernameText); // Grab the input username text
+        userPassInputLayout = findViewById(R.id.PasswordText); // Grab the input user password text
+        userEmailInputLayout = findViewById(R.id.EmailText);
     }
 
     private void hideTextFields()
