@@ -2,6 +2,7 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,8 +37,9 @@ public class StudentProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Add your logic to navigate to the update profile page for students
-                // Example: startActivity(new Intent(StudentProfileActivity.this, StudentUpdateProfileActivity.class));
-            }
+                Log.i("Main Activity", "Testing");
+                Intent intent = new Intent(StudentProfileActivity.this, Update.class);
+                startActivity(intent);            }
         });
 
         // Handle "Logout" button click
