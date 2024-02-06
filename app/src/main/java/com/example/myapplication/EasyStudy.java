@@ -17,6 +17,7 @@ import android.content.DialogInterface;
 
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 
 
 public class EasyStudy extends Application {
@@ -65,21 +66,21 @@ public class EasyStudy extends Application {
     public static void addStudent(Student student, Context context) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students");
 
-        // Check if the student with the same name already exists
+        // Check if a user with the same name already exists
         databaseReference.orderByChild("name").equalTo(student.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!userExistsWithSamePassword(dataSnapshot, student.getPassword())) {
-                    // User does not exist, proceed to add
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!userExistsWithSamePassword(dataSnapshot, student.getName(), student.getPassword())) {
+                    // User does not exist with the same name and password, proceed to add
                     addStudentToDatabase(student, databaseReference, context);
                 } else {
-                    // User with the same name already exists
+                    // User with the same name and password already exists
                     showErrorMessageDialog(context, "User with the same name and password already exists.");
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("Firebase", "Database error: " + databaseError.getMessage());
             }
         });
@@ -87,43 +88,58 @@ public class EasyStudy extends Application {
 
 
     // TODO: ADD THE SAME THING TO THE TEACHER ( ADD TEACHER AND ADD TEACHER TO DATABASE )
-    private static boolean userExistsWithSamePassword(DataSnapshot dataSnapshot, String password) {
-        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-            Student existingStudent = snapshot.getValue(Student.class);
-            if (existingStudent != null && existingStudent.getPassword().equals(password)) {
-                return true; // User with the same name and password already exists
-            }
-        }
-        return false;
-    }
 
         private static void addStudentToDatabase(Student student, DatabaseReference databaseReference, Context context) {
         // Generate a unique key for the new student
         String studentId = databaseReference.push().getKey();
-
+        if(studentId != null){
         // Add the student name to the database
         databaseReference.child(studentId).setValue(student)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Firebase", "Student added successfully");
-                    EasyStudy.showInfoMessageDialog(context, "You have registered successfully to the screen");
+                    EasyStudy.showInfoMessageDialog(context, "You have registered successfully to EasyStudy! :)");
                 })
                 .addOnFailureListener(e -> Log.e("Firebase", "Failed to add student", e));
-    }
+    }}
 
     // Add a teacher to the "teachers" table in the Realtime Database
     public static void addTeacher(Teacher teacher, Context context) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("teachers");
 
+        // Check if a user with the same name already exists
+        databaseReference.orderByChild("name").equalTo(teacher.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!userExistsWithSamePassword(dataSnapshot, teacher.getName(), teacher.getPassword())) {
+                    // User does not exist with the same name and password, proceed to add
+                    addTeacherToDatabase(teacher, databaseReference, context);
+                } else {
+                    // User with the same name and password already exists
+                    showErrorMessageDialog(context, "User with the same name and password already exists.");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Firebase", "Database error: " + databaseError.getMessage());
+            }
+        });
+    }
+
+
+    // Method to add a teacher to the database
+    private static void addTeacherToDatabase(Teacher teacher, DatabaseReference databaseReference, Context context) {
         // Generate a unique key for the new teacher
         String teacherId = databaseReference.push().getKey();
-
-        // Add the teacher object to the database
-        databaseReference.child(teacherId).setValue(teacher)
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Firebase", "Teacher added successfully");
-                    EasyStudy.showInfoMessageDialog(context, "You have registered successfully to the screen");
-                })
-                .addOnFailureListener(e -> Log.e("Firebase", "Failed to add teacher", e));
+        if (teacherId != null) {
+            // Add the teacher object to the database
+            databaseReference.child(teacherId).setValue(teacher)
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("Firebase", "Teacher added successfully");
+                        EasyStudy.showInfoMessageDialog(context, "You have registered successfully to the screen");
+                    })
+                    .addOnFailureListener(e -> Log.e("Firebase", "Failed to add teacher", e));
+        }
     }
 
     public static void checkUserExists(String username, String password, Context context, UserTypeCallback callback) {
@@ -133,43 +149,62 @@ public class EasyStudy extends Application {
         // Check in the students table
         studentsReference.orderByChild("name").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
+            public void onDataChange(DataSnapshot studentSnapshot) {
+                if (studentSnapshot.exists()) {
                     // User exists as a student
                     callback.onUserType(UserType.STUDENT, 1); // Return 1 for student
                 } else {
                     // User not found in students, check in teachers
                     teachersReference.orderByChild("name").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
+                        public void onDataChange(DataSnapshot teacherSnapshot) {
+                            if (teacherSnapshot.exists()) {
                                 // User exists as a teacher
                                 callback.onUserType(UserType.TEACHER, 0); // Return 0 for teacher
                             } else {
                                 // User not found in teachers as well
-                                showErrorMessageDialog(context, "User not registered in the database");
-
+                                // Proceed with registration
                                 callback.onUserType(UserType.UNKNOWN, -1); // Return -1 for unknown
-
                             }
                         }
 
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            Log.e("Firebase", "Database error: " + databaseError.getMessage());
+                        public void onCancelled(DatabaseError teacherError) {
+                            Log.e("Firebase", "Database error: " + teacherError.getMessage());
                         }
                     });
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("Firebase", "Database error: " + databaseError.getMessage());
+            public void onCancelled(DatabaseError studentError) {
+                Log.e("Firebase", "Database error: " + studentError.getMessage());
             }
         });
     }
 
-    private static void showErrorMessageDialog(Context context, String message) {
+    private static boolean userExistsWithSamePassword(DataSnapshot dataSnapshot, String username, String password) {
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            if (snapshot.getKey() != null) {
+                if (snapshot.getKey().equals(username)) {
+                    Student existingStudent = snapshot.getValue(Student.class);
+                    Teacher existingTeacher = snapshot.getValue(Teacher.class);
+
+                    if ((existingStudent != null && existingStudent.getPassword().equals(password) && existingTeacher == null) ||
+                            (existingTeacher != null && existingTeacher.getPassword().equals(password) && existingStudent == null)) {
+                        return true; // User with the same name and password already exists
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+
+
+    public static void showErrorMessageDialog(Context context, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Error")
                 .setMessage(message)

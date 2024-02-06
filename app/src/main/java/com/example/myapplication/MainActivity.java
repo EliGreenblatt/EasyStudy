@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 // Handle Login button click
-                Log.i(TAG,"Login button clicked");
+                Log.i(TAG, "Login button clicked");
                 hideButtons();
                 showTextFields();
                 backButton.setVisibility(View.VISIBLE); // Show the back button
@@ -72,10 +72,9 @@ public class MainActivity extends AppCompatActivity
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 // Handle Login button click
-                Log.i(TAG,"Second Login Pressed");
+                Log.i(TAG, "Second Login Pressed");
 
                 // Get the entered username and password
                 String username = usernameInputLayout.getEditText().getText().toString();
@@ -108,7 +107,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 // Handle Login button click
-                Log.i(TAG,"Register button clicked");
+                Log.i(TAG, "Register button clicked");
                 hideButtons();
                 showTextFields();
                 loginButton.setVisibility(View.GONE);
@@ -123,35 +122,46 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 // Handle Login button click
-                Log.i(TAG,"Register button clicked second time");
+                Log.i(TAG, "Register button clicked second time");
 
                 // Get the entered username and password
                 String username = usernameInputLayout.getEditText().getText().toString();
                 String password = userPassInputLayout.getEditText().getText().toString();
 
-                // Check if it's a teacher or student
-                if (teacher.isChecked()) {
-                    // If it's a teacher, gather additional information
-                    String phone = ""; // Get teacher's phone from UI element
-                    String email = ""; // Get teacher's email from UI element
-                    String shortBio = ""; // Get teacher's shortBio from UI element
-                    List<String> subjects = new ArrayList<>(); // Get teacher's subjects from UI element
+                // Check if a user with the same name and password already exists
+                EasyStudy.checkUserExists(username, password, MainActivity.this, new EasyStudy.UserTypeCallback() {
+                    @Override
+                    public void onUserType(EasyStudy.UserType userType, int i) {
+                        // Determine the user type based on the integer i
+                        if (i == 0 || i == 1) {
+                            // User with the same name and password already exists (either student or teacher)
+                            EasyStudy.showErrorMessageDialog(MainActivity.this, "User with the same name and password already exists.");
+                        } else {
+                            // User does not exist, proceed with registration
+                            if (teacher.isChecked()) {
+                                // If it's a teacher, gather additional information
+                                String phone = ""; // Get teacher's phone from UI element
+                                String email = ""; // Get teacher's email from UI element
+                                String shortBio = ""; // Get teacher's shortBio from UI element
+                                List<String> subjects = new ArrayList<>(); // Get teacher's subjects from UI element
 
-                    // Create a Teacher object
-                    Teacher newTeacher = new Teacher(null, password, username, phone, email, shortBio, subjects);
+                                // Create a Teacher object
+                                Teacher newTeacher = new Teacher(username, password, username, phone, email, shortBio, subjects);
 
-                    // Add the teacher to Firebase
-                    EasyStudy.addTeacher(newTeacher, MainActivity.this);
-                } else {
-                    // If it's a student, create a Student object
-                    Student newStudent = new Student(username, password, 0, "", "", "");
+                                // Add the teacher to Firebase
+                                EasyStudy.addTeacher(newTeacher, MainActivity.this);
+                            } else {
+                                // If it's a student, create a Student object
+                                Student newStudent = new Student(username, password, 0, "", "", "");
 
-                    // Add the student to Firebase
-                    EasyStudy.addStudent(newStudent, MainActivity.this);
-                }
+                                // Add the student to Firebase
+                                EasyStudy.addStudent(newStudent, MainActivity.this);
+                            }
+                        }
+                    }
+                });
             }
         });
-        
     }
 
     private void hideTextFields()
