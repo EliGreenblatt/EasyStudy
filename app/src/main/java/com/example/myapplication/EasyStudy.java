@@ -147,7 +147,9 @@ public class EasyStudy extends Application {
                                 callback.onUserType(UserType.TEACHER, 0); // Return 0 for teacher
                             } else {
                                 // User not found in teachers as well
+                                showErrorMessageDialog(context, "User not registered in the database");
                                 callback.onUserType(UserType.UNKNOWN, -1); // Return -1 for unknown
+
                             }
                         }
 
@@ -165,42 +167,6 @@ public class EasyStudy extends Application {
             }
         });
     }
-
-    // Check if the user exists in the database based on username and password
-//    public static void checkUserExists(String username, String password, Context context) {
-//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("students");
-//
-//        // Query the database to check if the username and password exist
-//        databaseReference.orderByChild("name").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    // User exists, now check the password
-//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                        Student student = snapshot.getValue(Student.class);
-//                        if (student != null && student.getPassword().equals(password)) {
-//                            // Password matches, perform logic here
-//                            Log.d("Firebase", "User exists with matching password");
-//                            EasyStudy.showInfoMessageDialog(context, "Proceeding to the feed");
-//                            return;
-//                        }
-//                    }
-//                    // Password doesn't match
-//                    showErrorMessageDialog(context, "Incorrect password. Please try again.");
-//                } else {
-//                    // User doesn't exist
-//                    Log.d("Firebase", "User does not exist");
-//
-//                    showErrorMessageDialog(context, "User does not exist. Please check your credentials.");
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.e("Firebase", "Database error: " + databaseError.getMessage());
-//            }
-//        });
-//    }
 
     private static void showErrorMessageDialog(Context context, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
