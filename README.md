@@ -7,9 +7,9 @@ EasyStudy is an application designed to connect students with private teachers f
 - Itamar Cohen
 - Eli Greenblatt
 - Evyatar Yossef
-- Naor Ladani
 - Roy Asraf
-  
+- Naor Ladani
+
 ## Features
 
 ### Teachers:

@@ -84,15 +84,14 @@ public class MainActivity extends AppCompatActivity
                 // Check if it's a teacher or student
                 EasyStudy.checkUserExists(username, password, MainActivity.this, new EasyStudy.UserTypeCallback() {
                     @Override
-                    public void onUserType(EasyStudy.UserType userType) {
+                    public void onUserType(EasyStudy.UserType userType)
+                    {
                         // Navigate to the appropriate page based on user type
                         EasyStudy.navigateToPage(MainActivity.this, userType);
                     }
                 });
             }
         });
-
-
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -40,7 +40,7 @@ public class EasyStudy extends Application {
                 break;
             case TEACHER:
                 // Navigate to the teacher's update profile page
-                // Example: context.startActivity(new Intent(context, TeacherUpdateProfileActivity.class));
+                context.startActivity(new Intent(context, TeacherProfileActivity.class));
                 break;
             case UNKNOWN:
                 // Navigate to the logout page or show an error message
