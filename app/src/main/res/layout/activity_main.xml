@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,8 +14,6 @@
         android:text="Back"
         android:layout_marginStart="50dp"
         android:layout_marginTop="400dp" />
-
-
 
     <Button
         android:id="@+id/loginButton"
@@ -44,18 +43,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Username TextInputLayout -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/UsernameText"
         android:layout_width="155dp"
         android:layout_height="62dp"
         android:layout_marginStart="110dp"
-        android:layout_marginTop="267dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="146dp"
-        android:layout_marginBottom="402dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -63,22 +64,43 @@
             android:hint="Username" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Password TextInputLayout -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/PasswordText"
         android:layout_width="193dp"
         android:layout_height="51dp"
         android:layout_marginStart="110dp"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="108dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/UsernameText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Email TextInputLayout -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/EmailText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="110dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PasswordText">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -112,14 +134,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="116dp"
-        android:layout_marginTop="208dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="143dp"
         android:layout_marginBottom="475dp"
         android:text="Are you a teacher?"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/register"

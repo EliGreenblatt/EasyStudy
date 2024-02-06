@@ -162,6 +162,7 @@ public class EasyStudy extends Application {
                             } else {
                                 // User not found in teachers as well
                                 // Proceed with registration
+                                //showErrorMessageDialog(context, "User is not registered in the system.");
                                 callback.onUserType(UserType.UNKNOWN, -1); // Return -1 for unknown
                             }
                         }
@@ -197,8 +198,6 @@ public class EasyStudy extends Application {
         }
         return false;
     }
-
-
 
 
 

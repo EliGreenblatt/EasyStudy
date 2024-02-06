@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity
     Button backButton;
     TextInputLayout usernameInputLayout;
     TextInputLayout userPassInputLayout;
+    TextInputLayout userEmailInputLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity
         registerButton = findViewById(R.id.registerButton); // Grab the register button reference
         usernameInputLayout = findViewById(R.id.UsernameText); // Grab the input username text
         userPassInputLayout = findViewById(R.id.PasswordText); // Grab the input user password text
+        userEmailInputLayout = findViewById(R.id.EmailText);
+
 
         teacher.setVisibility(View.GONE);
         register.setVisibility(View.GONE);
@@ -52,11 +55,11 @@ public class MainActivity extends AppCompatActivity
                 showButtons();
                 hideBack();
                 hideTextFields();
+                userEmailInputLayout.setVisibility(View.GONE);
                 backButton.setVisibility(View.GONE);
                 usernameInputLayout.getEditText().setText(""); // Clear entered username
                 userPassInputLayout.getEditText().setText(""); // Clear entered password
             }
-
         });
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +118,7 @@ public class MainActivity extends AppCompatActivity
                 teacher.setVisibility(View.VISIBLE);
                 register.setVisibility(View.VISIBLE);
                 backButton.setVisibility(View.VISIBLE); // Show the back button
+                userEmailInputLayout.setVisibility(View.VISIBLE); // Show the back button
             }
         });
 
@@ -127,6 +131,7 @@ public class MainActivity extends AppCompatActivity
                 // Get the entered username and password
                 String username = usernameInputLayout.getEditText().getText().toString();
                 String password = userPassInputLayout.getEditText().getText().toString();
+                String email = userPassInputLayout.getEditText().getText().toString();
 
                 // Check if a user with the same name and password already exists
                 EasyStudy.checkUserExists(username, password, MainActivity.this, new EasyStudy.UserTypeCallback() {
@@ -152,7 +157,7 @@ public class MainActivity extends AppCompatActivity
                                 EasyStudy.addTeacher(newTeacher, MainActivity.this);
                             } else {
                                 // If it's a student, create a Student object
-                                Student newStudent = new Student(username, password, 0, "", "", "");
+                                Student newStudent = new Student(username, password, 0, "", email, "");
 
                                 // Add the student to Firebase
                                 EasyStudy.addStudent(newStudent, MainActivity.this);
