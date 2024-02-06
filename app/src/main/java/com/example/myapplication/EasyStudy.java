@@ -134,7 +134,7 @@ public class EasyStudy extends Application {
             databaseReference.child(teacherId).setValue(teacher)
                     .addOnSuccessListener(aVoid -> {
                         Log.d("Firebase", "Teacher added successfully");
-                        EasyStudy.showInfoMessageDialog(context, "You have registered successfully to the screen");
+                        EasyStudy.showInfoMessageDialog(context, "You have registered successfully to EasyStudy! :)");
                     })
                     .addOnFailureListener(e -> Log.e("Firebase", "Failed to add teacher", e));
         }

@@ -43,8 +43,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Username TextInputLayout -->
-    <com.google.android.material.textfield.TextInputLayout
+       <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/UsernameText"
         android:layout_width="155dp"
         android:layout_height="62dp"
@@ -63,6 +62,51 @@
             android:layout_height="wrap_content"
             android:hint="Username" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <MultiAutoCompleteTextView
+        android:id="@+id/subjectSpinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginEnd="110dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EmailText"
+        android:inputType="textMultiLine"
+        android:selectAllOnFocus="true"
+        android:hint="Select Subjects"/>
+<!--    <MultiAutoCompleteTextView-->
+<!--        android:id="@+id/subjectSpinner"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginStart="110dp"-->
+<!--        android:layout_marginEnd="110dp"-->
+<!--        android:visibility="invisible"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/EmailText"-->
+<!--        android:inputType="textMultiLine"-->
+<!--        android:selectAllOnFocus="true"-->
+<!--        android:hint="Select Subjects" />-->
+
+<!--    <Spinner-->
+<!--        android:id="@+id/subjectSpinner"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginStart="110dp"-->
+<!--        android:layout_marginEnd="110dp"-->
+<!--        android:visibility="invisible"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/EmailText"-->
+<!--        android:inputType="textMultiLine"-->
+<!--        android:selectAllOnFocus="true"-->
+<!--        android:hint="Select Subjects" />-->
+
 
     <!-- Password TextInputLayout -->
     <com.google.android.material.textfield.TextInputLayout

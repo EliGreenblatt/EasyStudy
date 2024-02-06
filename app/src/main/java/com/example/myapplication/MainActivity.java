@@ -8,9 +8,14 @@ import android.os.Bundle;
 import android.widget.CheckBox;
 import com.google.android.material.textfield.TextInputLayout;
 
+//import android.widget.ArrayAdapter;
 import java.util.List;
 import java.util.ArrayList;
 
+import android.widget.Spinner;
+//import android.text.TextUtils;
+import android.widget.MultiAutoCompleteTextView;
+import android.widget.CompoundButton;
 
 
 public class MainActivity extends AppCompatActivity
@@ -25,6 +30,8 @@ public class MainActivity extends AppCompatActivity
     TextInputLayout usernameInputLayout;
     TextInputLayout userPassInputLayout;
     TextInputLayout userEmailInputLayout;
+    Spinner subjectSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +45,21 @@ public class MainActivity extends AppCompatActivity
         usernameInputLayout = findViewById(R.id.UsernameText); // Grab the input username text
         userPassInputLayout = findViewById(R.id.PasswordText); // Grab the input user password text
         userEmailInputLayout = findViewById(R.id.EmailText);
+        //subjectSpinner = findViewById(R.id.subjectSpinner);
+        MultiAutoCompleteTextView subjectSpinner = findViewById(R.id.subjectSpinner);
+
+        // Add CheckBox listener
+        teacher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // Toggle visibility of subjectSpinner based on whether teacher checkbox is checked
+                if (isChecked) {
+                    subjectSpinner.setVisibility(View.VISIBLE);
+                } else {
+                    subjectSpinner.setVisibility(View.GONE);
+                }
+            }
+        });
 
 
         teacher.setVisibility(View.GONE);
@@ -46,6 +68,16 @@ public class MainActivity extends AppCompatActivity
 
         backButton = findViewById(R.id.backButton);
         backButton.setVisibility(View.GONE);
+
+//        List<String> subjectsList = new ArrayList<>();
+//        subjectsList.add("Linear Algebra");
+//        subjectsList.add("Computer Science");
+//        subjectsList.add("Infi");
+//        subjectsList.add("Physics");
+//        subjectsList.add("Electronics");
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, subjectsList);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        subjectSpinner.setAdapter(adapter);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +88,7 @@ public class MainActivity extends AppCompatActivity
                 hideBack();
                 hideTextFields();
                 userEmailInputLayout.setVisibility(View.GONE);
+                subjectSpinner.setVisibility(View.GONE);
                 backButton.setVisibility(View.GONE);
                 usernameInputLayout.getEditText().setText(""); // Clear entered username
                 userPassInputLayout.getEditText().setText(""); // Clear entered password
@@ -106,6 +139,7 @@ public class MainActivity extends AppCompatActivity
                 });
             }
         });
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +165,7 @@ public class MainActivity extends AppCompatActivity
                 // Get the entered username and password
                 String username = usernameInputLayout.getEditText().getText().toString();
                 String password = userPassInputLayout.getEditText().getText().toString();
-                String email = userPassInputLayout.getEditText().getText().toString();
+                String email = userEmailInputLayout.getEditText().getText().toString();
 
                 // Check if a user with the same name and password already exists
                 EasyStudy.checkUserExists(username, password, MainActivity.this, new EasyStudy.UserTypeCallback() {
@@ -143,12 +177,21 @@ public class MainActivity extends AppCompatActivity
                             EasyStudy.showErrorMessageDialog(MainActivity.this, "User with the same name and password already exists.");
                         } else {
                             // User does not exist, proceed with registration
-                            if (teacher.isChecked()) {
+                            if (teacher.isChecked())
+                            {
                                 // If it's a teacher, gather additional information
                                 String phone = ""; // Get teacher's phone from UI element
-                                String email = ""; // Get teacher's email from UI element
+                                //String email = ""; // Get teacher's email from UI element
+                                String email = userEmailInputLayout.getEditText().getText().toString();
                                 String shortBio = ""; // Get teacher's shortBio from UI element
-                                List<String> subjects = new ArrayList<>(); // Get teacher's subjects from UI element
+                                List<String> subjects = new ArrayList<>(); // Get teacher's subjects
+                                String selectedSubjectsString = subjectSpinner.getText().toString();
+                                String[] selectedSubjectsArray = selectedSubjectsString.split(","); // Assuming subjects are separated by commas
+
+
+                                for (String subject : selectedSubjectsArray) {
+                                    subjects.add(subject.trim()); // Trim to remove leading/trailing spaces
+                                }
 
                                 // Create a Teacher object
                                 Teacher newTeacher = new Teacher(username, password, username, phone, email, shortBio, subjects);
@@ -156,6 +199,7 @@ public class MainActivity extends AppCompatActivity
                                 // Add the teacher to Firebase
                                 EasyStudy.addTeacher(newTeacher, MainActivity.this);
                             } else {
+
                                 // If it's a student, create a Student object
                                 Student newStudent = new Student(username, password, 0, "", email, "");
 
@@ -201,4 +245,5 @@ public class MainActivity extends AppCompatActivity
         loginButton.setVisibility(View.VISIBLE);
         registerButton.setVisibility(View.VISIBLE);
     }
+
 }
