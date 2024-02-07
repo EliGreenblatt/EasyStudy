@@ -63,14 +63,13 @@ public class Update extends AppCompatActivity
                     @Override
                     public void onStudentFound()
                     {
-
+                        Intent intent = new Intent(Update.this, StudentProfileActivity.class);
+                        startActivity(intent);
                     }
 
                     @Override
                     public void onTeacherFound()
                     {
-                        Intent intent = new Intent(Update.this, StudentProfileActivity.class);
-                        startActivity(intent);
                     }
 
                     @Override
