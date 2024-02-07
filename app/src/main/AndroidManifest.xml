@@ -33,6 +33,8 @@
             <!-- Add any necessary intent filters or other attributes here -->
         </activity>
         <activity android:name=".TeacherProfileActivity"/>
+        <activity android:name=".UploadLinksActivity" />
+
 
     </application>
 

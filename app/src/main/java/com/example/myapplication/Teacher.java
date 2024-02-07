@@ -10,6 +10,7 @@ public class Teacher {
     private String email;
     private String shortBio;
     private List<String> subjects;
+    private List<String> links;
 
     // Empty constructor required for Firebase
     public Teacher() {
@@ -51,6 +52,8 @@ public class Teacher {
 
     public String getAge() { return age; }
 
+    public List<String> getlinks() { return links; }
+
     @Override
     public String toString() {
         return
@@ -59,9 +62,17 @@ public class Teacher {
                 ", phone:" + phone +
                 ", email:" + email +
                 ", subjects:" + subjects +
+                ", links:" + links +
                 "                           ";
     }
 
+    public void addLink(String link) {
+        if(link != null)
+        {
+            this.links.add(link);
+        }
+
+    }
 
 
     // TODO: Add getters and setters for other attributes
