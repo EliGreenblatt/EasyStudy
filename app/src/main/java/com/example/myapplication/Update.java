@@ -1,8 +1,10 @@
 package com.example.myapplication;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,11 +16,17 @@ public class Update extends AppCompatActivity
     Button backButton;
     Button updateButton;
     TextInputEditText emailEditText;
-    TextInputEditText nameEditText;
     TextInputEditText bioEditText;
     TextInputEditText phoneEditText;
+    String username;
+    String password;
+    public void getDetails(Context context) {
+        // Load saved username and password
+        password = UserInformation.getSavedUsername(context);
+        username = UserInformation.getSavedPassword(context);
 
-
+        // Now you can use the savedUsername and savedPassword as needed
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -26,13 +34,16 @@ public class Update extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.update_profile);
 
+        // Grab the reference to the fire base
+        FireBaseData fireBaseData = new FireBaseData();
+
+
         // Grab the references to the back and update button
         backButton = findViewById(R.id.backButton);
         updateButton = findViewById(R.id.updateButton);
 
         // Get references to the TextInputEditTexts
         emailEditText = findViewById(R.id.email);
-        nameEditText = findViewById(R.id.name);
         bioEditText = findViewById(R.id.bio);
         phoneEditText = findViewById(R.id.phone);
 
@@ -56,14 +67,46 @@ public class Update extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                // Take the input from the input fields and update database
-                // afterwards print updated successfully and use call the return function
-                // you built in the previous button
+                getDetails(Update.this);
+                Log.i("Update", username + " in update");
+                Log.i("Update", password + " in update");
+
+                // Perform a search for a student
+                Log.i("Update", "Searching for user");
+
+                String updatedEmail = emailEditText.getText().toString();
+                String updatedBio = bioEditText.getText().toString();
+                String updatedPhone = phoneEditText.getText().toString();
+                fireBaseData.updateStudent(username, password,updatedEmail,
+                        updatedBio, updatedPhone, new FireBaseData.UserSearchListener() {
+                    @Override
+                    public void onStudentFound(Student student)
+                    {
+                        // Student found, do something with the student object
+                        Log.i("Update", student.toString() + " Student found ");
+                    }
+
+                    @Override
+                    public void onTeacherFound(Teacher teacher)
+                    {
+                        // This method will not be called in this scenario
+                        Log.i("Update", teacher.toString() + " teacher found ");
+                    }
+
+                    @Override
+                    public void onUserNotFound()
+                    {
+                        // Student not found
+                    }
+
+                    @Override
+                    public void onError(String errorMessage)
+                    {
+                        // Handle error
+                    }
+                });
             }
         });
 
     }
-
-
-
 }

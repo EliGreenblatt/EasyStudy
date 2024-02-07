@@ -1,6 +1,9 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -83,8 +86,8 @@ public class MainActivity extends AppCompatActivity
                 Log.i(TAG, "Second Login Pressed");
 
                 // Get the entered username and password
-                String username = usernameInputLayout.getEditText().getText().toString();
-                String password = userPassInputLayout.getEditText().getText().toString();
+                final String username = usernameInputLayout.getEditText().getText().toString();
+                final String password = userPassInputLayout.getEditText().getText().toString();
 
                 // Check if it's a teacher or student
                 EasyStudy.checkUserExists(username, password, MainActivity.this, new EasyStudy.UserTypeCallback() {
@@ -103,13 +106,15 @@ public class MainActivity extends AppCompatActivity
                             EasyStudy.showErrorMessageDialog(MainActivity.this, "User is not registered in the system.");
                         }
 
+
+                        UserInformation.saveUserCredentials(MainActivity.this, username, password);
+
                         // Navigate to the appropriate page based on user type
                         EasyStudy.navigateToPage(MainActivity.this, userType);
                     }
                 });
             }
         });
-
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
