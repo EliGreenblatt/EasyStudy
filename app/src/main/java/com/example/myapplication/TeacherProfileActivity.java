@@ -10,6 +10,8 @@ public class TeacherProfileActivity extends AppCompatActivity
 {
     Button updateProfileButton;
     Button logoutButton;
+    Button uploadFiles;
+    Button viewFiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -19,6 +21,8 @@ public class TeacherProfileActivity extends AppCompatActivity
 
         updateProfileButton = findViewById(R.id.updateProfile);
         logoutButton = findViewById(R.id.logout);
+        uploadFiles = findViewById(R.id.uploadFiles);
+        viewFiles = findViewById(R.id.viewFiles);
         updateProfileButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -46,5 +50,27 @@ public class TeacherProfileActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+
+        viewFiles.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // This code will execute when the updateProfileButton is clicked
+                Log.i("YourActivity", "View Files clicked");
+            }
+        });
+
+        uploadFiles.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // This code will execute when the updateProfileButton is clicked
+                Log.i("YourActivity", "Upload Files clicked");
+            }
+        });
+
     }
 }
