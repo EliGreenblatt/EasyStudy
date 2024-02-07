@@ -55,9 +55,9 @@ public class Teacher {
     public String toString() {
         return
                 "name:" + name +
-                ", age=" + age +
-                ", phone=" + phone +
-                ", email=" + email +
+                ", age:" + age +
+                ", phone:" + phone +
+                ", email:" + email +
                 ", subjects:" + subjects +
                 "                           ";
     }

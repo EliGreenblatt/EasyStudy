@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -19,17 +20,22 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class FoundActivity extends AppCompatActivity {
 
     private ListView teacherListView;
     private List<Teacher> foundTeachers;
     private ArrayAdapter<Teacher> adapter;
+    private DatabaseReference teachersRef;
+    private LinearLayout buttonsLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_found);
+
+        // Initialize Firebase database reference
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        teachersRef = database.getReference("teachers");
 
         // Retrieve search parameters from the Intent
         Intent intent = getIntent();
@@ -37,51 +43,62 @@ public class FoundActivity extends AppCompatActivity {
         String age = intent.getStringExtra("AGE");
         String subject = intent.getStringExtra("SUBJECT");
 
-        Log.i("FoundActivity", name);
-        Log.i("FoundActivity", age);
-        Log.i("FoundActivity", subject);
-
-        // Initialize views
+        // Initialize ListView and List
         teacherListView = findViewById(R.id.teacherListView);
         foundTeachers = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foundTeachers);
         teacherListView.setAdapter(adapter);
 
-        // Query the "teachers" node in the database based on search parameters
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("teachers");
-        Query query = databaseReference.orderByChild("name").equalTo(name);
+        // Initialize buttonsLayout
+        buttonsLayout = findViewById(R.id.buttonsLayout);
 
+        // Perform the search in Firebase database
+        Query query = teachersRef.orderByChild("name").equalTo(name);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                foundTeachers.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Teacher teacher = snapshot.getValue(Teacher.class);
-                    // Check additional filters (e.g., age, subject) here if needed
-                    if (teacherMatchesFilters(teacher, age, subject)) {
+                    if (teacher != null && teacher.getName().equals(name) && teacher.getAge().equals(age) && teacher.getSubjects().contains(subject)) {
+                        // If all conditions are met, add the teacher to the list of found teachers
                         foundTeachers.add(teacher);
                     }
                 }
+                // Notify the adapter that the data set has changed
                 adapter.notifyDataSetChanged();
-            }
 
+                // Add buttons based on the number of found teachers
+                addButtons(foundTeachers.size());
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle database error
                 Log.e("FoundActivity", "Database error: " + databaseError.getMessage());
             }
         });
     }
 
-    private boolean teacherMatchesFilters(Teacher teacher, String age, String subject) {
-        // Implement your filtering logic based on age and subject here
+    private void addButtons(int numberOfTeachers) {
+        buttonsLayout.removeAllViews(); // Clear existing buttons
+
+        for (int i = 0; i < numberOfTeachers; i++) {
+            final int position = i; // Declare final variable to make it effectively final
+            Button teacherButton = new Button(this);
+            teacherButton.setText("Teacher " + (i + 1));
+            teacherButton.setOnClickListener(v -> {
+                // Handle button click, navigate to the teacher profile activity
+                navigateToTeacherProfile(foundTeachers.get(position).getName());
+            });
+
+            buttonsLayout.addView(teacherButton);
+        }
+    }
+
+    private void navigateToTeacherProfile(String teacherName) {
+        // Implement the code to navigate to the teacher profile screen
         // For example:
-        // if (!teacher.getAge().equals(age)) {
-        //     return false;
-        // }
-        // if (!teacher.getSubject().equals(subject)) {
-        //     return false;
-        // }
-        // return true;
-        return true; // Placeholder, update with your filtering logic
+        // Intent intent = new Intent(FoundActivity.this, TeacherProfileActivity.class);
+        // intent.putExtra("TeacherName", teacherName);
+        // startActivity(intent);
     }
 }
