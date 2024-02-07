@@ -1,21 +1,23 @@
 package com.example.myapplication;
 
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.content.Intent;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication.R;
-import com.example.myapplication.Teacher;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ViewFilesActivity extends AppCompatActivity {
@@ -69,7 +71,25 @@ public class ViewFilesActivity extends AppCompatActivity {
     }
 
     private void displayFiles(List<String> files) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, files);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item_link, R.id.linkTextView, files);
         filesListView.setAdapter(adapter);
+
+        // Set a click listener on the ListView items to open links
+        filesListView.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedLink = files.get(position);
+            openLinkInBrowser(selectedLink);
+        });
+
+        // Make links in the ListView clickable
+        for (int i = 0; i < filesListView.getChildCount(); i++) {
+            TextView textView = (TextView) filesListView.getChildAt(i).findViewById(R.id.linkTextView);
+            Linkify.addLinks(textView, Linkify.WEB_URLS);
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+        }
     }
+
+    private void openLinkInBrowser(String url) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+        }
 }

@@ -71,6 +71,20 @@ public class UploadLinksActivity extends AppCompatActivity {
             return;
         }
 
+        // Create a list to store non-empty links
+        List<String> linksToUpdate = new ArrayList<>();
+
+        // Add non-empty links to the list
+        if (!link1.isEmpty()) {
+            linksToUpdate.add(link1);
+        }
+        if (!link2.isEmpty()) {
+            linksToUpdate.add(link2);
+        }
+        if (!link3.isEmpty()) {
+            linksToUpdate.add(link3);
+        }
+
         // Assuming you have the teacher's name, search for the teacher in the database
         if (teacherName != null && !teacherName.isEmpty()) {
             teachersRef.orderByChild("name").equalTo(teacherName)
@@ -82,9 +96,7 @@ public class UploadLinksActivity extends AppCompatActivity {
                                     Teacher teacher = teacherSnapshot.getValue(Teacher.class);
                                     if (teacher != null) {
                                         // Update links for the teacher object
-                                        teacher.addLink(link1);
-                                        teacher.addLink(link2);
-                                        teacher.addLink(link3);
+                                        teacher.setLinks(linksToUpdate);
 
                                         // Push the updated teacher object back to Firebase
                                         teachersRef.child(teacherSnapshot.getKey()).setValue(teacher);
@@ -107,6 +119,7 @@ public class UploadLinksActivity extends AppCompatActivity {
             Toast.makeText(this, "Teacher name not available", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 
 

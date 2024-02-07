@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -123,7 +124,8 @@ public class Update extends AppCompatActivity
                 Log.i("Update", password + " in update");
 
                 // Perform a search for a student
-                Log.i("Update", "Searching for user");
+                Log.i("Update", "Updated profile");
+                Toast.makeText(Update.this, "Profile has updated successfully", Toast.LENGTH_SHORT).show();
 
                 String updatedEmail = emailEditText.getText().toString();
                 String updatedBio = bioEditText.getText().toString();

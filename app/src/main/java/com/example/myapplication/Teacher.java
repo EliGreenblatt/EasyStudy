@@ -66,12 +66,8 @@ public class Teacher {
                 "                           ";
     }
 
-    public void addLink(String link) {
-        if(link != null)
-        {
-            this.links.add(link);
-        }
-
+    public void setLinks(List<String> linksToUpdate) {
+        this.links = linksToUpdate;
     }
 
 
