@@ -97,8 +97,8 @@ public class FoundActivity extends AppCompatActivity {
     private void navigateToTeacherProfile(String teacherName) {
         // Implement the code to navigate to the teacher profile screen
         // For example:
-        // Intent intent = new Intent(FoundActivity.this, TeacherProfileActivity.class);
-        // intent.putExtra("TeacherName", teacherName);
-        // startActivity(intent);
+        Intent intent = new Intent(FoundActivity.this, ViewFilesActivity.class);
+        intent.putExtra("TeacherName", teacherName);
+        startActivity(intent);
     }
 }

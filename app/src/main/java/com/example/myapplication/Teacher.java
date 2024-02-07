@@ -52,7 +52,7 @@ public class Teacher {
 
     public String getAge() { return age; }
 
-    public List<String> getlinks() { return links; }
+    public List<String> getLinks() { return links; }
 
     @Override
     public String toString() {

@@ -25,6 +25,8 @@
         <activity android:name=".Update"></activity>
         <activity android:name=".Lookup"></activity>
         <activity android:name=".FoundActivity"></activity>
+        <activity android:name=".ViewFilesActivity"></activity>
+
 
         <!-- Add the following lines for StudentProfileActivity -->
         <activity

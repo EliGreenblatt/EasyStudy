@@ -43,7 +43,12 @@ public class TeacherProfileActivity extends AppCompatActivity {
         viewFiles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Navigate to ViewFilesActivity and pass the teacher name as an extra
                 Log.i("YourActivity", "View Files clicked");
+                String teacherName = UserInformation.getSavedUsername(TeacherProfileActivity.this);
+                Intent intent = new Intent(TeacherProfileActivity.this, ViewFilesActivity.class);
+                intent.putExtra("TeacherName", teacherName);
+                startActivity(intent);
             }
         });
 
