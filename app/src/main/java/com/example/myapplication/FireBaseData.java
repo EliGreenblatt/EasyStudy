@@ -26,8 +26,7 @@ public class FireBaseData
 
     // Method to update student
     public void updateStudent(String username, String password,String email,
-                              String bio, String phone,final UserSearchListener listener)
-    {
+                              String bio, String phone,final UserSearchListener listener) {
         Log.i("FireBaseData", "starting search");
         Log.i("FireBaseData", "User: " + username);
         Log.i("FireBaseData","Password: " + password);
@@ -62,48 +61,87 @@ public class FireBaseData
                 listener.onError(databaseError.getMessage());
             }
         });
+
+
     }
 
-    // Method to update teacher
-    public void updateTeacher(String username, String password, String email,
-                              String bio, String phone, final UserSearchListener listener) {
-        Log.i("FireBaseData", "starting teacher search");
+    // Search for student
+    public void searchStudent(String username, String password,final UserSearchListener listener) {
+        Log.i("FireBaseData", "starting search");
         Log.i("FireBaseData", "User: " + username);
-        Log.i("FireBaseData", "Password: " + password);
-        // Search in teachers table
-        teachersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        Log.i("FireBaseData","Password: " + password);
+        // Search in students table
+        studentsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot teacherSnapshot : dataSnapshot.getChildren()) {
-                    String storedUsername = teacherSnapshot.child("name").getValue(String.class);
-                    String storedPassword = teacherSnapshot.child("password").getValue(String.class);
-                    Log.i("FireBaseData", "Found teacher username: " + storedUsername);
-                    Log.i("FireBaseData", "Found teacher password: " + storedPassword);
-                    if (storedUsername != null && storedPassword != null && storedUsername.equals(username) && storedPassword.equals(password)) {
-                        Log.i("FireBaseData", "Found teacher");
-                        teacherSnapshot.getRef().child("email").setValue(email);
-                        teacherSnapshot.getRef().child("shortBio").setValue(bio);
-                        teacherSnapshot.getRef().child("phone").setValue(phone);
-                        return;
+                for (DataSnapshot studentSnapshot : dataSnapshot.getChildren()) {
+                    String storedUsername = studentSnapshot.child("name").getValue(String.class);
+                    String storedPassword = studentSnapshot.child("password").getValue(String.class);
+                    Log.i("FireBaseData","Found username: " + storedUsername);
+                    Log.i("FireBaseData","Found password: " + storedPassword);
+                    if (storedUsername != null && storedPassword != null && storedUsername.equals(username) && storedPassword.equals(password))
+                    {
+                        Log.i("FireBaseData", "Found student");
+                        listener.onStudentFound();
                     }
                 }
-                // If not found in teachers table
-                Log.i("FireBaseData", "Not Found in teachers table");
+                // If not found in students table
+                Log.i("FireBaseData", "Not Found in students table");
                 listener.onUserNotFound();
             }
 
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.i("FireBaseData", "Teacher On Cancel function");
+                Log.i("FireBaseData", "On Cancel function");
+
                 listener.onError(databaseError.getMessage());
             }
         });
+
+
+    }
+
+    // Search for teacher
+    public void searchTeacher(String username, String password,final UserSearchListener listener) {
+        Log.i("FireBaseData", "starting search");
+        Log.i("FireBaseData", "User: " + username);
+        Log.i("FireBaseData","Password: " + password);
+        // Search in students table
+        teachersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot studentSnapshot : dataSnapshot.getChildren()) {
+                    String storedUsername = studentSnapshot.child("name").getValue(String.class);
+                    String storedPassword = studentSnapshot.child("password").getValue(String.class);
+                    Log.i("FireBaseData","Found username: " + storedUsername);
+                    Log.i("FireBaseData","Found password: " + storedPassword);
+                    if (storedUsername != null && storedPassword != null && storedUsername.equals(username) && storedPassword.equals(password))
+                    {
+                        Log.i("FireBaseData", "Found student");
+                        listener.onTeacherFound();
+                    }
+                }
+                // If not found in students table
+                Log.i("FireBaseData", "Not Found in students table");
+                listener.onUserNotFound();
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.i("FireBaseData", "On Cancel function");
+
+                listener.onError(databaseError.getMessage());
+            }
+        });
+
     }
 
 
     public interface UserSearchListener {
-        void onStudentFound(Student student);
-        void onTeacherFound(Teacher teacher);
+        void onStudentFound();
+        void onTeacherFound();
         void onUserNotFound();
         void onError(String errorMessage);
     }

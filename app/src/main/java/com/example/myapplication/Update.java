@@ -1,5 +1,6 @@
 package com.example.myapplication;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -57,6 +58,57 @@ public class Update extends AppCompatActivity
             {
                 // Enter here function that will take us back to teacher
                 // or student accordingly
+                getDetails(Update.this);
+                fireBaseData.searchStudent(username, password, new FireBaseData.UserSearchListener() {
+                    @Override
+                    public void onStudentFound()
+                    {
+
+                    }
+
+                    @Override
+                    public void onTeacherFound()
+                    {
+                        Intent intent = new Intent(Update.this, StudentProfileActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onUserNotFound() {
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+                fireBaseData.searchTeacher(username, password, new FireBaseData.UserSearchListener()
+                {
+                    @Override
+                    public void onStudentFound()
+                    {
+
+                    }
+
+                    @Override
+                    public void onTeacherFound()
+                    {
+                        Intent intent = new Intent(Update.this, TeacherProfileActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onUserNotFound() {
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
             }
         });
 
@@ -80,17 +132,16 @@ public class Update extends AppCompatActivity
                 fireBaseData.updateStudent(username, password,updatedEmail,
                         updatedBio, updatedPhone, new FireBaseData.UserSearchListener() {
                     @Override
-                    public void onStudentFound(Student student)
+                    public void onStudentFound()
                     {
                         // Student found, do something with the student object
-                        Log.i("Update", student.toString() + " Student found ");
+                        Log.i("Update"," Student found ");
                     }
 
                     @Override
-                    public void onTeacherFound(Teacher teacher)
+                    public void onTeacherFound()
                     {
                         // This method will not be called in this scenario
-                        Log.i("Update", teacher.toString() + " teacher found ");
                     }
 
                     @Override
@@ -106,68 +157,12 @@ public class Update extends AppCompatActivity
                         // Handle error
                     }
                 });
-
-                fireBaseData.updateStudent(username, password,updatedEmail,
-                        updatedBio, updatedPhone, new FireBaseData.UserSearchListener() {
-                            @Override
-                            public void onStudentFound(Student student)
-                            {
-                                // Student found, do something with the student object
-                                Log.i("Update", student.toString() + " Student found ");
-                            }
-
-                            @Override
-                            public void onTeacherFound(Teacher teacher)
-                            {
-                                // This method will not be called in this scenario
-                                Log.i("Update", teacher.toString() + " teacher found ");
-                            }
-
-                            @Override
-                            public void onUserNotFound()
-                            {
-                                // Theoretically we shouldn't reach here
-                                Log.i("Update","Teacher not found");
-                            }
-
-                            @Override
-                            public void onError(String errorMessage)
-                            {
-                                // Handle error
-                            }
-                        });
-
-                fireBaseData.updateTeacher(username, password,updatedEmail,
-                        updatedBio, updatedPhone, new FireBaseData.UserSearchListener() {
-                            @Override
-                            public void onStudentFound(Student student)
-                            {
-                                // Student found, do something with the student object
-                                Log.i("Update", student.toString() + " Student found ");
-                            }
-
-                            @Override
-                            public void onTeacherFound(Teacher teacher)
-                            {
-                                // This method will not be called in this scenario
-                                Log.i("Update", teacher.toString() + " teacher found ");
-                            }
-
-                            @Override
-                            public void onUserNotFound()
-                            {
-                                // Theoretically we shouldn't reach here
-                                Log.i("Update","Teacher not found");
-                            }
-
-                            @Override
-                            public void onError(String errorMessage)
-                            {
-                                // Handle error
-                            }
-                        });
             }
+
+
         });
 
-            }
+
+
     }
+}

@@ -10,6 +10,7 @@ public class UserInformation
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
 
+
     // Method to save user credentials in SharedPreferences
     public static void saveUserCredentials(Context context, String username, String password) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
