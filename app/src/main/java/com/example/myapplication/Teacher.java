@@ -51,6 +51,21 @@ public class Teacher {
 
     public String getAge() { return age; }
 
+    @Override
+    public String toString() {
+        return
+                "name:" + name +
+                ", age=" + age +
+                ", phone=" + phone +
+                ", email=" + email +
+                ", subjects:" + subjects +
+                "                           ";
+    }
+
+
+
     // TODO: Add getters and setters for other attributes
+
+
 }
 
