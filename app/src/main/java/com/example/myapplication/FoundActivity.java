@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -27,11 +28,15 @@ public class FoundActivity extends AppCompatActivity {
     private ArrayAdapter<Teacher> adapter;
     private DatabaseReference teachersRef;
     private LinearLayout buttonsLayout;
+    private Button backButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_found);
+
+        backButton = findViewById(R.id.backButton);
 
         // Initialize Firebase database reference
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -52,24 +57,56 @@ public class FoundActivity extends AppCompatActivity {
         // Initialize buttonsLayout
         buttonsLayout = findViewById(R.id.buttonsLayout);
 
+        Log.i("TAG", name);
+        Log.i("TAG", age);
+        Log.i("TAG", subject);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();  // Close the activity when the back button is clicked
+            }
+        });
+
         // Perform the search in Firebase database
-        Query query = teachersRef.orderByChild("name").equalTo(name);
+        // Perform the search in Firebase database
+        Query query;
+        if (!name.isEmpty() && !age.isEmpty() && !subject.isEmpty()) {
+            // Search by all parameters (name, age, and subject)
+            query = teachersRef.orderByChild("name").equalTo(name);
+        } else if (name.isEmpty() && age.isEmpty() && !subject.isEmpty()) {
+            // Search only by subject
+            query = teachersRef.orderByChild("subjects/" + subject);
+        } else {
+            // Handle the case where no search parameters are provided
+            Log.e("FoundActivity", "No search parameters provided");
+            return;
+        }
+
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Teacher teacher = snapshot.getValue(Teacher.class);
-                    if (teacher != null && teacher.getName().equals(name) && teacher.getAge().equals(age) && teacher.getSubjects().contains(subject)) {
-                        // If all conditions are met, add the teacher to the list of found teachers
+
+                    // Additional logging for debugging
+                    Log.i("FoundActivity", "Teacher found: " + teacher);
+
+                    if (teacher != null && (name.isEmpty() || teacher.getName().equals(name)) &&
+                            (age.isEmpty() || teacher.getAge().equals(age)) &&
+                            (subject.isEmpty() || teacher.getSubjects().contains(subject))) {
+                        // If conditions are met, add the teacher to the list of found teachers
                         foundTeachers.add(teacher);
                     }
                 }
+
                 // Notify the adapter that the data set has changed
                 adapter.notifyDataSetChanged();
 
                 // Add buttons based on the number of found teachers
                 addButtons(foundTeachers.size());
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle database error
@@ -81,7 +118,10 @@ public class FoundActivity extends AppCompatActivity {
     private void addButtons(int numberOfTeachers) {
         buttonsLayout.removeAllViews(); // Clear existing buttons
 
-        for (int i = 0; i < numberOfTeachers; i++) {
+        // Limit the number of teachers to display to a maximum of 4
+        int maxTeachers = Math.min(numberOfTeachers, 4);
+
+        for (int i = 0; i < maxTeachers; i++) {
             final int position = i; // Declare final variable to make it effectively final
             Button teacherButton = new Button(this);
             teacherButton.setText("Teacher " + (i + 1));
