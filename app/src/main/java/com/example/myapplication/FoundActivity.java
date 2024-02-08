@@ -92,9 +92,10 @@ public class FoundActivity extends AppCompatActivity {
                     // Additional logging for debugging
                     Log.i("FoundActivity", "Teacher found: " + teacher);
 
-                    if (teacher != null && (name.isEmpty() || teacher.getName().equals(name)) &&
-                            (age.isEmpty() || teacher.getAge().equals(age)) &&
-                            (subject.isEmpty() || teacher.getSubjects().contains(subject))) {
+                    if (teacher != null &&
+                            (name.isEmpty() || teacher.getName().toLowerCase().equals(name.toLowerCase())) &&
+                            (age.isEmpty() || teacher.getAge().toLowerCase().equals(age.toLowerCase())) &&
+                            (subject.isEmpty() || teacherContainsSubject(teacher, subject.toLowerCase()))) {
                         // If conditions are met, add the teacher to the list of found teachers
                         foundTeachers.add(teacher);
                     }
@@ -106,6 +107,16 @@ public class FoundActivity extends AppCompatActivity {
                 // Add buttons based on the number of found teachers
                 addButtons(foundTeachers.size());
             }
+
+            private boolean teacherContainsSubject(Teacher teacher, String subject) {
+                for (String teacherSubject : teacher.getSubjects()) {
+                    if (teacherSubject.toLowerCase().equals(subject)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
