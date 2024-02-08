@@ -77,16 +77,28 @@ public class ViewFilesActivity extends AppCompatActivity {
         // Set a click listener on the ListView items to open links
         filesListView.setOnItemClickListener((parent, view, position, id) -> {
             String selectedLink = files.get(position);
-            openLinkInBrowser(selectedLink);
+            if (isValidLink(selectedLink)) {
+                openLinkInBrowser(selectedLink);
+            }
         });
 
         // Make links in the ListView clickable
         for (int i = 0; i < filesListView.getChildCount(); i++) {
             TextView textView = (TextView) filesListView.getChildAt(i).findViewById(R.id.linkTextView);
-            Linkify.addLinks(textView, Linkify.WEB_URLS);
-            textView.setMovementMethod(LinkMovementMethod.getInstance());
+            String fileText = files.get(i);
+            if (isValidLink(fileText)) {
+                Linkify.addLinks(textView, Linkify.WEB_URLS);
+                textView.setMovementMethod(LinkMovementMethod.getInstance());
+            }
         }
     }
+
+    private boolean isValidLink(String text) {
+        // Implement your logic to check if the text is a valid link
+        // For simplicity, you can use android.util.Patterns.WEB_URL.matcher
+        return android.util.Patterns.WEB_URL.matcher(text).matches();
+    }
+
 
     private void openLinkInBrowser(String url) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
