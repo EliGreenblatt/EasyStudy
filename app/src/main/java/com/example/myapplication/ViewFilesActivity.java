@@ -3,11 +3,13 @@ package com.example.myapplication;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +27,7 @@ public class ViewFilesActivity extends AppCompatActivity {
     private ListView filesListView;
     private DatabaseReference teachersRef;
     private String teacherName;
+    private Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class ViewFilesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_files);
 
         filesListView = findViewById(R.id.filesListView);
+        backButton = findViewById(R.id.backButton);  // Initialize back button
 
         // Initialize Firebase database reference
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -46,6 +50,12 @@ public class ViewFilesActivity extends AppCompatActivity {
         }
 
         loadFiles();
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();  // Close the activity when the back button is clicked
+            }
+        });
     }
 
     private void loadFiles() {

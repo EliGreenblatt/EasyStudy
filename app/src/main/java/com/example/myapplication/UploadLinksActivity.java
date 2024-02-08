@@ -23,6 +23,7 @@ public class UploadLinksActivity extends AppCompatActivity {
 
     private EditText linkEditText1, linkEditText2, linkEditText3;
     private Button uploadLinkButton;
+    private Button backButton;
 
     private DatabaseReference teachersRef;
     private String teacherName;
@@ -41,6 +42,7 @@ public class UploadLinksActivity extends AppCompatActivity {
         linkEditText2 = findViewById(R.id.linkEditText2);
         linkEditText3 = findViewById(R.id.linkEditText3);
         uploadLinkButton = findViewById(R.id.uploadLinkButton);
+        backButton = findViewById(R.id.backButton);
 
         // Retrieve teacher name directly without checking the intent
         teacherName = getIntent().getStringExtra("TeacherName");
@@ -56,6 +58,13 @@ public class UploadLinksActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadLinks();
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();  // Close the activity when the back button is clicked
             }
         });
     }

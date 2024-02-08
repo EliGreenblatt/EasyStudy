@@ -4,12 +4,21 @@
     android:layout_height="match_parent"
     tools:context=".UploadLinksActivity">
 
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
     <EditText
         android:id="@+id/linkEditText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter link 1"
         android:visibility="visible"
+        android:layout_below="@id/backButton"
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"/>
 

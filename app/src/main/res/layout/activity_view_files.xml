@@ -3,11 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
     <ListView
         android:id="@+id/filesListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
+        android:layout_below="@id/backButton"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp" />
 
