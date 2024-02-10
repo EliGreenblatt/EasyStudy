@@ -30,7 +30,6 @@ public class FoundActivity extends AppCompatActivity {
     private LinearLayout buttonsLayout;
     private Button backButton;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +91,7 @@ public class FoundActivity extends AppCompatActivity {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int count = 0;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Teacher teacher = snapshot.getValue(Teacher.class);
 
@@ -104,6 +104,10 @@ public class FoundActivity extends AppCompatActivity {
                             (subject.isEmpty() || teacherContainsSubject(teacher, subject.toLowerCase()))) {
                         // If conditions are met, add the teacher to the list of found teachers
                         foundTeachers.add(teacher);
+                        count ++;
+                    }
+                    if (count >= 4) {
+                        break; // Exit the loop once the first 4 teachers are added to the list
                     }
                 }
 

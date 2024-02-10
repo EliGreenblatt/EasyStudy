@@ -57,13 +57,12 @@ public class Teacher {
     @Override
     public String toString() {
         return
-                "name:" + name +
-                ", age:" + age +
-                ", phone:" + phone +
-                ", email:" + email +
-                ", subjects:" + subjects +
-                ", shortBio:" + shortBio +
-                "                           ";
+                "Name:" + name +
+                ", Age:" + age + "\n" +
+                "Phone:" + phone + "\n" +
+                "Email:" + email + "\n" +
+                "Subjects:" + subjects + "\n" +
+                "ShortBio:" + shortBio;
     }
 
     public void setLinks(List<String> linksToUpdate) {
