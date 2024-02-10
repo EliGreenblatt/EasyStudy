@@ -44,9 +44,10 @@ public class FoundActivity extends AppCompatActivity {
 
         // Retrieve search parameters from the Intent
         Intent intent = getIntent();
-        String name = intent.getStringExtra("NAME");
-        String age = intent.getStringExtra("AGE");
-        String subject = intent.getStringExtra("SUBJECT");
+        String name = intent.getStringExtra("NAME").trim();
+        String age = intent.getStringExtra("AGE").trim();
+        String subject = intent.getStringExtra("SUBJECT").trim();
+
 
         // Initialize ListView and List
         teacherListView = findViewById(R.id.teacherListView);
@@ -77,9 +78,14 @@ public class FoundActivity extends AppCompatActivity {
         } else if (name.isEmpty() && age.isEmpty() && !subject.isEmpty()) {
             // Search only by subject
             query = teachersRef.orderByChild("subjects/" + subject);
-        } else {
+        }
+        else if (!name.isEmpty() && age.isEmpty() && subject.isEmpty()) {
+        // search by name
+        query = teachersRef.orderByChild("name").equalTo(name);
+        }
+        else {
             // Handle the case where no search parameters are provided
-            Log.e("FoundActivity", "No search parameters provided");
+                Log.e("FoundActivity", "No search parameters provided");
             return;
         }
 

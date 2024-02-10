@@ -62,7 +62,7 @@ public class Teacher {
                 ", phone:" + phone +
                 ", email:" + email +
                 ", subjects:" + subjects +
-                ", links:" + links +
+                ", shortBio:" + shortBio +
                 "                           ";
     }
 

@@ -1,4 +1,5 @@
 package com.example.myapplication;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,38 +8,28 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-public class Update extends AppCompatActivity
-{
+public class Update extends AppCompatActivity {
     // Declaring buttons and text input editors
-    Button backButton;
-    Button updateButton;
-    TextInputEditText emailEditText;
-    TextInputEditText bioEditText;
-    TextInputEditText phoneEditText;
-    String username;
-    String password;
-    public void getDetails(Context context) {
-        // Load saved username and password
-        password = UserInformation.getSavedUsername(context);
-        username = UserInformation.getSavedPassword(context);
+    private Button backButton;
+    private Button updateButton;
+    private TextInputEditText emailEditText;
+    private TextInputEditText bioEditText;
+    private TextInputEditText phoneEditText;
+    private String username;
+    private String password;
 
-        // Now you can use the savedUsername and savedPassword as needed
-    }
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        // This updates the layout to the "update_profile" layout
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.update_profile);
 
-        // Grab the reference to the fire base
-        FireBaseData fireBaseData = new FireBaseData();
 
+        // Grab the reference to the firebase
+        FireBaseData fireBaseData = new FireBaseData();
 
         // Grab the references to the back and update button
         backButton = findViewById(R.id.backButton);
@@ -49,121 +40,172 @@ public class Update extends AppCompatActivity
         bioEditText = findViewById(R.id.bio);
         phoneEditText = findViewById(R.id.phone);
 
-
-        // Set click functionality for back button, this button needs to take us back to the
-        // Student or Teacher profile activity page
-        backButton.setOnClickListener(new View.OnClickListener()
-        {
+        // Set click functionality for back button
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                // Enter here function that will take us back to teacher
-                // or student accordingly
-                getDetails(Update.this);
-                fireBaseData.searchStudent(username, password, new FireBaseData.UserSearchListener() {
-                    @Override
-                    public void onStudentFound()
-                    {
-                        Intent intent = new Intent(Update.this, StudentProfileActivity.class);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onTeacherFound()
-                    {
-                    }
-
-                    @Override
-                    public void onUserNotFound() {
-
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-
-                fireBaseData.searchTeacher(username, password, new FireBaseData.UserSearchListener()
-                {
-                    @Override
-                    public void onStudentFound()
-                    {
-
-                    }
-
-                    @Override
-                    public void onTeacherFound()
-                    {
-                        Intent intent = new Intent(Update.this, TeacherProfileActivity.class);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onUserNotFound() {
-
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
+            public void onClick(View v) {
+                finish();
+                //navigateBack();
             }
         });
 
-        // Set update button functionality, needs to take the input from the text fields
-        // and update the database accordingly
-        updateButton.setOnClickListener(new View.OnClickListener()
-        {
+        // Set update button functionality
+        updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                getDetails(Update.this);
-                Log.i("Update", username + " in update");
-                Log.i("Update", password + " in update");
+            public void onClick(View v) {
+                updateProfile();
+            }
+        });
+    }
 
-                // Perform a search for a student
-                Log.i("Update", "Updated profile");
-                Toast.makeText(Update.this, "Profile has updated successfully", Toast.LENGTH_SHORT).show();
+    private void navigateBack() {
+        getDetails();
+        FireBaseData fireBaseData = new FireBaseData();
+        fireBaseData.searchStudent(username, password, new FireBaseData.UserSearchListener() {
+            @Override
+            public void onStudentFound() {
+                startActivity(new Intent(Update.this, StudentProfileActivity.class));
+            }
 
-                String updatedEmail = emailEditText.getText().toString();
-                String updatedBio = bioEditText.getText().toString();
-                String updatedPhone = phoneEditText.getText().toString();
-                fireBaseData.updateStudent(username, password,updatedEmail,
-                        updatedBio, updatedPhone, new FireBaseData.UserSearchListener() {
+            @Override
+            public void onTeacherFound() {
+                startActivity(new Intent(Update.this, TeacherProfileActivity.class));
+            }
+
+            @Override
+            public void onUserNotFound() {
+                // Handle user not found
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                // Handle error
+                Log.e("Update", "Error: " + errorMessage);
+            }
+        });
+    }
+
+    private void updateProfile() {
+        getDetails();
+        Log.i("Update", "Updating profile");
+        Toast.makeText(Update.this, "Updating profile...", Toast.LENGTH_SHORT).show();
+
+        String updatedEmail = emailEditText.getText().toString();
+        String updatedBio = bioEditText.getText().toString();
+        String updatedPhone = phoneEditText.getText().toString();
+
+        FireBaseData fireBaseData = new FireBaseData();
+
+        fireBaseData.searchStudent(username, password, new FireBaseData.UserSearchListener() {
+            @Override
+            public void onStudentFound() {
+                updateStudentProfile(updatedEmail, updatedBio, updatedPhone);
+            }
+
+            @Override
+            public void onTeacherFound() {
+                // If user is found as a teacher, update teacher profile
+                updateTeacherProfile(updatedEmail, updatedBio, updatedPhone);
+            }
+
+            @Override
+            public void onUserNotFound() {
+                // If user is not found as a student, try searching as a teacher
+                fireBaseData.searchTeacher(username, password, new FireBaseData.UserSearchListener() {
                     @Override
-                    public void onStudentFound()
-                    {
-                        // Student found, do something with the student object
-                        Log.i("Update"," Student found ");
+                    public void onStudentFound() {
+                        // This should not happen in this scenario
                     }
 
                     @Override
-                    public void onTeacherFound()
-                    {
-                        // This method will not be called in this scenario
+                    public void onTeacherFound() {
+                        // If user is found as a teacher, update teacher profile
+                        updateTeacherProfile(updatedEmail, updatedBio, updatedPhone);
                     }
 
                     @Override
-                    public void onUserNotFound()
-                    {
-                        // Theoretically we shouldn't reach here
-                        Log.i("Update","Teacher not found");
+                    public void onUserNotFound() {
+                        // Handle user not found
+                        Log.i("Update", "User not found");
                     }
 
                     @Override
-                    public void onError(String errorMessage)
-                    {
+                    public void onError(String errorMessage) {
                         // Handle error
+                        Log.e("Update", "Error: " + errorMessage);
                     }
                 });
             }
 
-
+            @Override
+            public void onError(String errorMessage) {
+                // Handle error
+                Log.e("Update", "Error: " + errorMessage);
+            }
         });
+    }
 
 
+    private void updateStudentProfile(String email, String bio, String phone) {
+        FireBaseData fireBaseData = new FireBaseData();
+        fireBaseData.updateStudent(username, password, email, bio, phone, new FireBaseData.UserSearchListener() {
+            @Override
+            public void onStudentFound() {
+                Log.i("Update", "Student profile updated successfully");
+                Toast.makeText(Update.this, "Student profile updated successfully", Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onTeacherFound() {
+                // This method will not be called in this scenario
+            }
+
+            @Override
+            public void onUserNotFound() {
+                // Theoretically, we shouldn't reach here
+                Log.i("Update", "Student not found");
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                // Handle error
+                Log.e("Update", "Error: " + errorMessage);
+            }
+        });
+    }
+
+    private void updateTeacherProfile(String email, String bio, String phone) {
+        FireBaseData fireBaseData = new FireBaseData();
+        fireBaseData.updateTeacher(username, password, email, bio, phone, new FireBaseData.UserSearchListener() {
+            @Override
+            public void onStudentFound() {
+                // This method will not be called in this scenario
+                Log.i("Update", "updateTeacherProfile: onStudentFound");
+            }
+
+            @Override
+            public void onTeacherFound() {
+                Log.i("Update", "Teacher profile updated successfully");
+                Toast.makeText(Update.this, "Teacher profile updated successfully", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onUserNotFound() {
+                // Theoretically, we shouldn't reach here
+                Log.i("Update", "updateTeacherProfile: onUserNotFound");
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                // Handle error
+                Log.e("Update", "Error: " + errorMessage);
+            }
+        });
+    }
+
+    private void getDetails() {
+        // Load saved username and password
+        username = UserInformation.getSavedUsername(this);
+        password = UserInformation.getSavedPassword(this);
     }
 }

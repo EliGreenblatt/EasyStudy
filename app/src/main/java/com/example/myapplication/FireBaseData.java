@@ -62,7 +62,42 @@ public class FireBaseData
             }
         });
 
+    }
 
+    // Method to update teacher
+    public void updateTeacher(String username, String password, String email, String bio, String phone, final UserSearchListener listener) {
+        Log.i("FireBaseData", "starting search");
+        Log.i("FireBaseData", "User: " + username);
+        Log.i("FireBaseData", "Password: " + password);
+        // Search in teachers table
+        teachersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot teacherSnapshot : dataSnapshot.getChildren()) {
+                    String storedUsername = teacherSnapshot.child("name").getValue(String.class);
+                    String storedPassword = teacherSnapshot.child("password").getValue(String.class);
+                    Log.i("FireBaseData", "Found username: " + storedUsername);
+                    Log.i("FireBaseData", "Found password: " + storedPassword);
+                    if (storedUsername != null && storedPassword != null && storedUsername.equals(username) && storedPassword.equals(password)) {
+                        Log.i("FireBaseData", "Found teacher");
+                        teacherSnapshot.getRef().child("email").setValue(email);
+                        teacherSnapshot.getRef().child("shortBio").setValue(bio);
+                        teacherSnapshot.getRef().child("phone").setValue(phone);
+                        listener.onTeacherFound();
+                        return;
+                    }
+                }
+                // If not found in teachers table
+                Log.i("FireBaseData", "Not Found in teachers table");
+                listener.onUserNotFound();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.i("FireBaseData", "On Cancel function");
+                listener.onError(databaseError.getMessage());
+            }
+        });
     }
 
     // Search for student
@@ -146,5 +181,3 @@ public class FireBaseData
         void onError(String errorMessage);
     }
 }
-
-
