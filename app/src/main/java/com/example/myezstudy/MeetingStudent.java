@@ -83,7 +83,7 @@ public class MeetingStudent extends AppCompatActivity {
                         student.Notify(student.getMeetings().get(position));
                         studentSnapshot.getRef().child("meetings").setValue(student.getMeetings());
                         adapter.notifyDataSetChanged();
-                        Toast.makeText(MeetingStudent.this, "Meeting delete successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MeetingStudent.this, "Meeting delete successfully", Toast.LENGTH_SHORT).show(); //TODO: check this delete
                         dialog.dismiss();
                     }
                 });
