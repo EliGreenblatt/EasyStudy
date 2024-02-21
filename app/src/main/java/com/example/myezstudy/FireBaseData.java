@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myezstudy;
 
 import androidx.annotation.NonNull;
 import com.google.firebase.database.DataSnapshot;
@@ -34,8 +34,11 @@ public class FireBaseData {
                     String storedUsername = studentSnapshot.child("name").getValue(String.class);
                     String storedPassword = studentSnapshot.child("password").getValue(String.class);
                     if (storedUsername != null && storedPassword != null && storedUsername.equals(username) && storedPassword.equals(password)) {
-                        studentSnapshot.getRef().child("email").setValue(email);
+                        if(!email.isEmpty())
+                            studentSnapshot.getRef().child("email").setValue(email);
+                        if(!bio.isEmpty())
                         studentSnapshot.getRef().child("shortBio").setValue(bio);
+                        if(!phone.isEmpty())
                         studentSnapshot.getRef().child("phone").setValue(phone);
                         return;
                     }
@@ -61,9 +64,12 @@ public class FireBaseData {
                     String storedUsername = teacherSnapshot.child("name").getValue(String.class);
                     String storedPassword = teacherSnapshot.child("password").getValue(String.class);
                     if (storedUsername != null && storedPassword != null && storedUsername.equals(username) && storedPassword.equals(password)) {
-                        teacherSnapshot.getRef().child("email").setValue(email);
-                        teacherSnapshot.getRef().child("shortBio").setValue(bio);
-                        teacherSnapshot.getRef().child("phone").setValue(phone);
+                        if(!email.isEmpty())
+                            teacherSnapshot.getRef().child("email").setValue(email);
+                        if(!bio.isEmpty())
+                            teacherSnapshot.getRef().child("shortBio").setValue(bio);
+                        if(!phone.isEmpty())
+                            teacherSnapshot.getRef().child("phone").setValue(phone);
                         listener.onTeacherFound();
                         return;
                     }
@@ -139,3 +145,5 @@ public class FireBaseData {
         void onError(String errorMessage);
     }
 }
+
+

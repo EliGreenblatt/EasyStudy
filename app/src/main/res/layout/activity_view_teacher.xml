@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ListTextView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewTeacher">
+
+    <ImageView
+        android:id="@+id/img2"
+        android:layout_width="491dp"
+        android:layout_height="703dp"
+        android:layout_marginBottom="116dp"
+        app:backgroundTint="#FF9900"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.375"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.988"
+        app:srcCompat="@drawable/__2024_02_13_182342" />
+
+    <TextView
+        android:id="@+id/links2"
+        android:layout_width="421dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="112dp"
+        android:layout_marginBottom="588dp"
+        android:background="#FF9900"
+        android:text="                               Links"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:autoSizeTextType="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <ListView
+        android:id="@+id/FilesList"
+        style="@android:style/Widget.Material.Light.ListView.DropDown"
+        android:layout_width="413dp"
+        android:layout_height="241dp"
+        android:layout_marginTop="150dp"
+        android:background="@color/white"
+        android:listSelector="#FF9900"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Links"
+        android:layout_width="421dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="415dp"
+        android:background="#FF9900"
+
+        android:text="                      Available Meetings"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:autoSizeTextType="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/MeetingListView"
+        android:layout_width="413dp"
+        android:layout_height="265dp"
+        android:layout_marginTop="446dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/white"
+        android:listSelector="#FF9900"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/BackBut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="366dp"
+        android:layout_marginBottom="677dp"
+        app:backgroundTint="#FF9900"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

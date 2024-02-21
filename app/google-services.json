@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "357502267293",
+    "firebase_url": "https://easystudy-3e79f-default-rtdb.firebaseio.com",
     "project_id": "easystudy-3e79f",
     "storage_bucket": "easystudy-3e79f.appspot.com"
   },
@@ -10,6 +11,25 @@
         "mobilesdk_app_id": "1:357502267293:android:d050ae3506022f779a4974",
         "android_client_info": {
           "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBySDqJG8MxjgUzz4jbVJnPz8Nql_4KX2Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357502267293:android:3ad49d6b9732f2ba9a4974",
+        "android_client_info": {
+          "package_name": "com.example.myezstudy"
         }
       },
       "oauth_client": [],

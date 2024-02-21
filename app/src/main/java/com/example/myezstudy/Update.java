@@ -1,4 +1,6 @@
-package com.example.myapplication;
+package com.example.myezstudy;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,40 +9,37 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class Update extends AppCompatActivity {
-    // Declaring buttons and text input editors
-    private Button backButton;
+    private Button backUp;
     private Button updateButton;
-    private TextInputEditText emailEditText;
-    private TextInputEditText bioEditText;
-    private TextInputEditText phoneEditText;
+    private TextInputLayout emailEditText;
+    private TextInputLayout bioEditText;
+    private TextInputLayout phoneEditText;
     private String username;
     private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.update_profile);
+        setContentView(R.layout.activity_update);
 
 
         // Grab the reference to the firebase
         FireBaseData fireBaseData = new FireBaseData();
 
         // Grab the references to the back and update button
-        backButton = findViewById(R.id.backButton);
+        backUp = findViewById(R.id.backUp);
         updateButton = findViewById(R.id.updateButton);
 
         // Get references to the TextInputEditTexts
-        emailEditText = findViewById(R.id.email);
-        bioEditText = findViewById(R.id.bio);
-        phoneEditText = findViewById(R.id.phone);
+        emailEditText = findViewById(R.id.emailUp);
+        bioEditText = findViewById(R.id.bioUp);
+        phoneEditText = findViewById(R.id.phoneUp);
 
         // Set click functionality for back button
-        backButton.setOnClickListener(new View.OnClickListener() {
+        backUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -63,12 +62,12 @@ public class Update extends AppCompatActivity {
         fireBaseData.searchStudent(username, password, new FireBaseData.UserSearchListener() {
             @Override
             public void onStudentFound() {
-                startActivity(new Intent(Update.this, StudentProfileActivity.class));
+                startActivity(new Intent(Update.this, StudentProfile.class));
             }
 
             @Override
             public void onTeacherFound() {
-                startActivity(new Intent(Update.this, TeacherProfileActivity.class));
+                startActivity(new Intent(Update.this, TeacherProfile.class));
             }
 
             @Override
@@ -89,9 +88,9 @@ public class Update extends AppCompatActivity {
         Log.i("Update", "Updating profile");
         Toast.makeText(Update.this, "Updating profile...", Toast.LENGTH_SHORT).show();
 
-        String updatedEmail = emailEditText.getText().toString();
-        String updatedBio = bioEditText.getText().toString();
-        String updatedPhone = phoneEditText.getText().toString();
+        String updatedEmail = emailEditText.getEditText().getText().toString();
+        String updatedBio = bioEditText.getEditText().getText().toString();
+        String updatedPhone = phoneEditText.getEditText().getText().toString();
 
         FireBaseData fireBaseData = new FireBaseData();
 
@@ -204,7 +203,7 @@ public class Update extends AppCompatActivity {
 
     private void getDetails() {
         // Load saved username and password
-        username = UserInformation.getSavedUsername(this);
         password = UserInformation.getSavedPassword(this);
+        username = UserInformation.getSavedUsername(this);
     }
 }
