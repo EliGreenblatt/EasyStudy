@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SendChatMessage">
+
+    <Button
+        android:id="@+id/sendMsg"
+        android:layout_width="165dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="121dp"
+        android:layout_marginBottom="16dp"
+        android:text="Send"
+        app:backgroundTint="#FF9900"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputMsg" />
+
+    <Button
+        android:id="@+id/backButtonChat"
+        android:layout_width="96dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="16dp"
+        android:textColor="#0C0B0B"
+        app:backgroundTint="#FF9900"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-39dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputMsg"
+        android:layout_width="408dp"
+        android:layout_height="329dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="23dp"
+        app:layout_constraintBottom_toTopOf="@+id/sendMsg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView6">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputMsgtxt"
+            android:layout_width="match_parent"
+            android:layout_height="314dp"
+            android:hint="Enter message here"
+            android:singleLine="false" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        app:layout_constraintBottom_toTopOf="@+id/inputMsg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.556"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/__2024_02_13_182342" />
+</androidx.constraintlayout.widget.ConstraintLayout>
