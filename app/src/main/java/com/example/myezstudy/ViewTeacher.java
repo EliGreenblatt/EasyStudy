@@ -67,6 +67,7 @@ public class ViewTeacher extends AppCompatActivity {
         BackBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(ViewTeacher.this, StudentProfile.class));
                 finish();  // Close the activity when the back button is clicked
             }
         });
