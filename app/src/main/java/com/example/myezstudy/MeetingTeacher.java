@@ -27,16 +27,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+// managing meetings for a teacher in the EasyStudy application.
 public class MeetingTeacher extends AppCompatActivity {
     Button createMeeting, backButton;
     private ListView meetingsList;
-
     private DatabaseReference teachersRef;
     private String teacherName;
     private CalendarView calendarCreate;
     private int dayCreate, monthCreate, yearCreate;
-
     TextInputLayout startCreate, endCreate, price;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,9 +107,10 @@ public class MeetingTeacher extends AppCompatActivity {
                     }
                 });
     }
-    private void displayMeetings(List<Meeting> MettingsList, Teacher teacher) {
 
-        ArrayAdapter<Meeting> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, MettingsList);
+    private void displayMeetings(List<Meeting> meetingList, Teacher teacher) {
+
+        ArrayAdapter<Meeting> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, meetingList);
         meetingsList.setAdapter(adapter);
         // Set a click listener on the ListView items to open links
         meetingsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -135,13 +136,15 @@ public class MeetingTeacher extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-                builder.setNegativeButton("Send Message", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(MeetingTeacher.this, SendChatMessage.class);
-                        intent.putExtra("PartnerUsername", teacher.getMeetings().get(position).getPartnerUsername());
-                        startActivity(intent);
-                    }
-                });
+                if( !(teacher.getMeetings().get(position).ifAvailable())) {
+                    builder.setNegativeButton("Send Message", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(MeetingTeacher.this, SendChatMessage.class);
+                            intent.putExtra("PartnerUsername", teacher.getMeetings().get(position).getPartnerUsername());
+                            startActivity(intent);
+                        }
+                    });
+                }
                 AlertDialog alert = builder.create();
                 alert.show();
             }

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,14 +22,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+/**
+ * displaying and managing meetings for a student.
+ */
 public class MeetingStudent extends AppCompatActivity {
-
     Button backButtonStudMet;
     private ListView MeetingListStudent;
-
     private DatabaseReference studentsRef;
     private String studentName;
 
+    // Initializes the MeetingStudent UI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +41,7 @@ public class MeetingStudent extends AppCompatActivity {
         studentName =UserInformation.getSavedUsername(this);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         studentsRef = database.getReference("students");
-        loadMettings();
+        loadMeetings();
 
         backButtonStudMet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +50,9 @@ public class MeetingStudent extends AppCompatActivity {
             }
         });
     }
-    private void loadMettings() {
+
+    // Loads the meetings for the current student from the database.
+    private void loadMeetings() {
         studentsRef.orderByKey().equalTo(studentName)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -69,9 +72,15 @@ public class MeetingStudent extends AppCompatActivity {
                     }
                 });
     }
-    private void displayMeetings(List<Meeting> MettingsList, User student) {
 
-        ArrayAdapter<Meeting> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, MettingsList);
+    /**
+     * Displays the meetings for the current student in a ListView.
+     * @param meetingsList The list of meetings to display.
+     * @param student      The current student.
+     */
+    private void displayMeetings(List<Meeting> meetingsList, User student) {
+
+        ArrayAdapter<Meeting> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, meetingsList);
         MeetingListStudent.setAdapter(adapter);
         // Set a click listener on the ListView items to open links
         MeetingListStudent.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -95,13 +104,15 @@ public class MeetingStudent extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-                builder.setNegativeButton("Send Message", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(MeetingStudent.this, SendChatMessage.class);
-                        intent.putExtra("PartnerUsername", student.getMeetings().get(position).getPartnerUsername());
-                        startActivity(intent);
-                    }
-                });
+                if( !(student.getMeetings().get(position).ifAvailable())) {
+                    builder.setNegativeButton("Send Message", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(MeetingStudent.this, SendChatMessage.class);
+                            intent.putExtra("PartnerUsername", student.getMeetings().get(position).getPartnerUsername());
+                            startActivity(intent);
+                        }
+                    });
+                }
                 AlertDialog alert = builder.create();
                 alert.show();
             }

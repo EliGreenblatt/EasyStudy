@@ -60,20 +60,19 @@ public class Register extends AppCompatActivity {
                 String email = EmailReg.getEditText().getText().toString();
                 String name = nameReg.getEditText().getText().toString();
                 // Check if a user with the same name and password already exists
-                EasyStudy.checkUserExists(username, password, Register.this, new EasyStudy.UserTypeCallback() {
+                EasyStudy.checkUserExists(username, Register.this, new EasyStudy.UserTypeCallback() {
                     @Override
                     public void onUserType(EasyStudy.UserType userType, int i) {
                         // Determine the user type based on the integer i
                         if (i == 0 || i == 1) {
                             // User with the same name and password already exists (either student or teacher)
                             EasyStudy.showErrorMessageDialog(Register.this, "User with the same name and password already exists.");
+
                         }
                         else {
                             // User does not exist, proceed with registration
                             if (TeacherCheck.isChecked()) {
                                 // If it's a teacher, gather additional information
-                                String phone = ""; // Get teacher's phone from UI element
-                                String shortBio = ""; // Get teacher's shortBio from UI element
                                 List<String> subjects = new ArrayList<>(); // Get teacher's subjects
                                 String selectedSubjectsString = Objects.requireNonNull(SubjectReg.getEditText()).getText().toString();
                                 String[] selectedSubjectsArray = selectedSubjectsString.split(","); // Assuming subjects are separated by commas
@@ -82,13 +81,10 @@ public class Register extends AppCompatActivity {
                                 }
 
                                 // Create a Teacher object
-                                Teacher newTeacher = new Teacher(name, password, "", phone, email, shortBio, subjects);
-
+                                Teacher newTeacher = new Teacher(name, password, "", "", email, "", subjects);
                                 // Add the teacher to Firebase
                                 EasyStudy.addTeacher(newTeacher, username, Register.this);
-
                                 UserInformation.saveUserCredentials(Register.this, username, password);
-
                                 // Navigate to the appropriate page based on user type
                                 startActivity(new Intent(Register.this, TeacherProfile.class));
                             }
@@ -96,11 +92,9 @@ public class Register extends AppCompatActivity {
 
                                 // If it's a student, create a Student object
                                 User newStudent = new User(name, password, "", "", email, "");
-
                                 // Add the student to Firebase
                                 EasyStudy.addStudent(newStudent, username,  Register.this);
                                 UserInformation.saveUserCredentials(Register.this, username, password);
-
                                 // Navigate to the appropriate page based on user type
                                 startActivity(new Intent(Register.this, StudentProfile.class));
 

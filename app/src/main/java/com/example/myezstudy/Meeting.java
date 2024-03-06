@@ -3,10 +3,12 @@ package com.example.myezstudy;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Represents a meeting between users.
+ */
 public class Meeting implements Comparable<Meeting>{
 
-    private  String partnerUsername;
+    private String partnerUsername;
     private User partner;
     private int day;
     private int month;
@@ -15,7 +17,9 @@ public class Meeting implements Comparable<Meeting>{
     private int endHour;
     private int price;
     private String Available;
-    public Meeting(){}
+
+    public Meeting(){} // for database
+
     public Meeting(int day ,int month, int year, int startHour, int endHour, int price) {
         this.partner = null;
         this.day = day;
@@ -48,18 +52,19 @@ public class Meeting implements Comparable<Meeting>{
         this.price = M.getPrice();
         this.Available = "false";
     }
+
+    // getters
     public int getPrice(){return price;}
     public String getPartnerUsername(){return partnerUsername;}
-
     public int getDay(){return day;}
     public int getMonth(){return month;}
     public int getYear(){return year;}
-
     public int getStartHour(){return startHour;}
-
     public int getEndHour(){return endHour;}
+    public User getPartner() {return partner;}
 
 
+    // string representation of the meeting details.
     public String printDetails() {
         if(this.ifAvailable()){
             return
@@ -77,6 +82,8 @@ public class Meeting implements Comparable<Meeting>{
                         "\nprice: " + price;
 
     }
+
+    // string representation of the meeting.
     public String toString() {
         if(this.ifAvailable()){
             return
@@ -92,8 +99,13 @@ public class Meeting implements Comparable<Meeting>{
                         " to " + endHour;
 
     }
-    public User getPartner() {return partner;}
 
+    /**
+     * Checks if the meeting is equal to another meeting
+     * based on date and time.
+     * @param M Another Meeting object to compare.
+     * @return True if the meetings are equal, false otherwise.
+     */
     public boolean equalTo(Meeting M){
         if(this.day == M.getDay() && this.month == M.getMonth()
                 &&this.year == M.getYear())
@@ -104,17 +116,26 @@ public class Meeting implements Comparable<Meeting>{
         return false;
     }
 
+    /**
+     * Adds a partner to the meeting.
+     * @param partner         User object representing the partner.
+     * @param partnerUsername Username of the partner.
+     */
     public void addPartner(User partner, String partnerUsername) {
         if(!ifAvailable()) return;
         this.partnerUsername = partnerUsername;
         this.Available = "false";
         this.partner = partner;
     }
+
+    // Cancels the meeting, making it available.
     public void CancelMetting() {
         this.Available = "true";
         this.partnerUsername = null;
         this.partner = null;
     }
+
+    // returns if meeting is available
     public boolean ifAvailable(){
         if(this.partner == null){
             this.Available = "true";
@@ -123,6 +144,8 @@ public class Meeting implements Comparable<Meeting>{
         this.Available = "false";
         return false;
     }
+
+    // True if the meeting can be canceled, false otherwise.
     public boolean checkIfCanCancel(){
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
@@ -136,22 +159,19 @@ public class Meeting implements Comparable<Meeting>{
         return true;
     }
 
+    // Compares two meetings for sorting based on date and time.
     @Override
-    public int compareTo(Meeting o) {
-        if (this.year < o.getYear()) return -1;
-        else if (this.year > o.getYear()) return 1;
-        else if (this.month < o.getMonth()) return -1;
-        else if (this.month > o.getMonth()) return 1;
-        else if (this.day < o.getDay()) return -1;
-        else if (this.day > o.getDay()) return 1;
-        else if (this.startHour
-                < o.getStartHour()) return -1;
-        else if (this.startHour
-                > o.getStartHour()) return 1;
-        else if (this.endHour
-                < o.getEndHour()) return -1;
-        else if (this.endHour
-                > o.getEndHour()) return 1;
+    public int compareTo(Meeting to) {
+        if (this.year < to.getYear()) return -1;
+        if (this.year > to.getYear()) return 1;
+        if (this.month < to.getMonth()) return -1;
+        if (this.month > to.getMonth()) return 1;
+        if (this.day < to.getDay()) return -1;
+        if (this.day > to.getDay()) return 1;
+        if (this.startHour < to.getStartHour()) return -1;
+        if (this.startHour > to.getStartHour()) return 1;
+        if (this.endHour < to.getEndHour()) return -1;
+        if (this.endHour > to.getEndHour()) return 1;
         return 0;
     }
 }

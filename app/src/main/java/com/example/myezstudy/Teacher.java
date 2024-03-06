@@ -18,10 +18,10 @@ public class Teacher extends User {
     private List<String> links;
 
     // Empty constructor required for Firebase
-    public Teacher(
-    ) {
+    public Teacher() {
         super();
     }
+
     public Teacher(String name,String password ,String age, String phone, String email, String shortBio, List<String> subjects) {
         super( name, password , age,  phone,  email,  shortBio);
         this.subjects = subjects;
@@ -31,7 +31,6 @@ public class Teacher extends User {
     public List<String> getSubjects() {
         return subjects;
     }
-
     public List<String> getLinks() { return links; }
     public List<Meeting> getMeetings() { return super.getMeetings(); }
 
@@ -65,7 +64,7 @@ public class Teacher extends User {
     }
 
     @Override
-    public void  Notify(Meeting M) {
+    public void Notify(Meeting M) {
         for (Meeting meeting : super.getMeetings()) {
             if (meeting.equalTo(M)) {
                 if (!meeting.ifAvailable()) {
@@ -85,6 +84,10 @@ public class Teacher extends User {
         }
     }
 
+    /**
+     * Deletes old meetings for the teacher.
+     * @param teacherSnapshot DataSnapshot representing the teacher.
+     */
     public void DeleteOldMeetings(DataSnapshot teacherSnapshot) {
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
@@ -108,7 +111,9 @@ public class Teacher extends User {
                 this.NotifyToDeleteMeeting(meeting);
         }
     }
-@Override
+
+    // Notifies the teacher to delete a meeting and updates the partner student accordingly.
+    @Override
     public void NotifyToDeleteMeeting(Meeting M) {
         for( Meeting meeting : super.getMeetings()){
             if(meeting.equalTo(M)){
@@ -145,7 +150,5 @@ public class Teacher extends User {
             }
         }
     }
-
-
 }
 

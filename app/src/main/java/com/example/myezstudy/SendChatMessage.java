@@ -37,6 +37,7 @@ public class SendChatMessage extends AppCompatActivity {
             Ref = database.getReference("teachers");
         else
             Ref = database.getReference("students");
+
         backButtonChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

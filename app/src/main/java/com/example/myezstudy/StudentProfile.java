@@ -21,6 +21,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * student's profile.
+ */
 public class StudentProfile extends AppCompatActivity {
 
     Button logout, ProfileEditStud, Search, MeetingStud, messagesStudButton;
@@ -29,138 +32,136 @@ public class StudentProfile extends AppCompatActivity {
     private int count;
     private CalendarView calendarMettings;
     private Calendar calendar;
+
+    //Initializes the StudentProfile activity.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_profile);
-        calendarMettings =  findViewById(R.id.calendarView);
-        messagesStudButton =findViewById(R.id.messagesStudButton);
+
+        // Initialize UI components
+        calendarMettings = findViewById(R.id.calendarView);
+        messagesStudButton = findViewById(R.id.messagesStudButton);
         calendar = Calendar.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         studentsRef = database.getReference("students");
         Username = UserInformation.getSavedUsername(this);
-        logout =  (Button) findViewById(R.id.logoutStud);
+        logout = findViewById(R.id.logoutStud);
+        ProfileEditStud = findViewById(R.id.ProfileEditStud);
+        Search = findViewById(R.id.Search);
+        MeetingStud = findViewById(R.id.MeetingStud);
+
         // Handle "Logout" button click
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Add your logic to perform logout (e.g., return to the login screen)
-                //Example
+                // Redirect to the login screen
                 startActivity(new Intent(StudentProfile.this, MainActivity.class));
-                //finish(); // Close the current activity
             }
         });
+
+        // Handle "View Messages" button click
         messagesStudButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Example
                 startActivity(new Intent(StudentProfile.this, Messages.class));
             }
         });
-        ProfileEditStud =  (Button) findViewById(R.id.ProfileEditStud);
-        // Handle "Logout" button click
+
+        // Handle "Edit Profile" button click
         ProfileEditStud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Example
                 startActivity(new Intent(StudentProfile.this, Update.class));
             }
         });
-        Search =  (Button) findViewById(R.id.Search);
-        // Handle "Logout" button click
+
+        // Handle "Search Teachers" button click
         Search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Add your logic to perform logout (e.g., return to the login screen)
-                //Example
                 startActivity(new Intent(StudentProfile.this, SearchTeachers.class));
-                //finish(); // Close the current activity
             }
         });
-        MeetingStud =  findViewById(R.id.MeetingStud);
 
+        // Handle "View Meetings" button click
         MeetingStud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Add your logic to perform logout (e.g., return to the login screen)
-                //Example
                 startActivity(new Intent(StudentProfile.this, MeetingStudent.class));
-                //finish(); // Close the current activity
             }
         });
 
-        ProfileEditStud =  (Button) findViewById(R.id.ProfileEditStud);
-        // Handle "Logout" button click
-        ProfileEditStud.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Add your logic to perform logout (e.g., return to the login screen)
-                //Example
-                startActivity(new Intent(StudentProfile.this, Update.class));
-
-                //finish(); // Close the current activity
-            }
-        });
-        getCountOfNew();
-        count = 0;
+        // Count meetings for the selected date on the calendar
         calendarMettings.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                studentsRef.orderByKey().equalTo(Username)
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()) {
-                                    for (DataSnapshot studentSnapshot : dataSnapshot.getChildren()) {
-                                        User student = studentSnapshot.getValue(User.class);
-                                        if (student != null && student.getMeetings() != null) {
-                                            for( Meeting M : student.getMeetings()){
-
-                                                if(M.getDay() == dayOfMonth  &&
-                                                        M.getMonth() == (month + 1) &&
-                                                        M.getYear() == year){
-                                                    count++;
-                                                }
-                                            }
-                                            Toast.makeText(StudentProfile.this, Integer.toString(count) + " Meetings", Toast.LENGTH_SHORT).show();
-                                            count = 0;
-                                        }
-
-                                    }
-                                }
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                count = 0;
-                            }
-                        });
+                countMeetings(dayOfMonth, month, year);
             }
-
         });
-    }
-    public void getCountOfNew() {
-        studentsRef.orderByKey().equalTo(Username)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot studentSnapshot : dataSnapshot.getChildren()) {
-                                User student = studentSnapshot.getValue(User.class);
-                                if (student != null) {
-                                    Toast.makeText(StudentProfile.this, "There are " + student.getNewMessage() + "   new messages"
-                                            , Toast.LENGTH_SHORT).show();
-                                }
 
+        // Display the count of new messages
+        getCountOfNew();
+        count = 0;
+    }
+
+    /**
+     * Count meetings for the selected date on the calendar.
+     *
+     * @param dayOfMonth The selected day.
+     * @param month      The selected month.
+     * @param year       The selected year.
+     */
+    private void countMeetings(int dayOfMonth, int month, int year) {
+        studentsRef.orderByKey().equalTo(Username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot studentSnapshot : dataSnapshot.getChildren()) {
+                        User student = studentSnapshot.getValue(User.class);
+                        if (student != null && student.getMeetings() != null) {
+                            for (Meeting M : student.getMeetings()) {
+                                if (M.getDay() == dayOfMonth &&
+                                        M.getMonth() == (month + 1) &&
+                                        M.getYear() == year) {
+                                    count++;
+                                }
                             }
+                            Toast.makeText(StudentProfile.this, Integer.toString(count) + " Meetings", Toast.LENGTH_SHORT).show();
+                            count = 0;
                         }
                     }
+                }
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        count = 0;
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                count = 0;
+            }
+        });
+    }
+
+    /**
+     * Get the count of new messages and display a toast.
+     */
+    public void getCountOfNew() {
+        studentsRef.orderByKey().equalTo(Username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot studentSnapshot : dataSnapshot.getChildren()) {
+                        User student = studentSnapshot.getValue(User.class);
+                        if (student != null) {
+                            Toast.makeText(StudentProfile.this, "There are " + student.getNewMessage() + " new messages", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                count = 0;
+            }
+        });
     }
 }
-

@@ -35,7 +35,6 @@ public class Update extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
-
         // Grab the reference to the firebase
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         studentsRef = database.getReference("students");

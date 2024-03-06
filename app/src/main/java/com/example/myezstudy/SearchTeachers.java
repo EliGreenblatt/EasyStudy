@@ -13,19 +13,20 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+// searching teachers
 public class SearchTeachers extends AppCompatActivity {
     private ListView teacherListView;
     private List<String> foundTeachers;
@@ -81,9 +82,8 @@ public class SearchTeachers extends AppCompatActivity {
                 Log.i("TAG", name);
                 Log.i("TAG", username);
                 Log.i("TAG", subject);
+
                 // Perform the search in Firebase database
-                // Perform the search in Firebase database
-                Query query;
                 teachersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -102,6 +102,10 @@ public class SearchTeachers extends AppCompatActivity {
                                     foundUsernames.add(teacherSnapshot.getKey());
                                 }
                             }
+                        }
+                        else{
+                            Toast.makeText(SearchTeachers.this, "There is no such user", Toast.LENGTH_SHORT).show();
+
                         }
                         // Notify the adapter that the data set has changed
                         adapter.notifyDataSetChanged();
@@ -125,7 +129,6 @@ public class SearchTeachers extends AppCompatActivity {
                         }
                         return false;
                     }
-
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {

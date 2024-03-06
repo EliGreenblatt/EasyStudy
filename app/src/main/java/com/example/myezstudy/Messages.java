@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,7 +26,7 @@ public class Messages extends AppCompatActivity {
     Button backButtonMes;
     private ListView MessageList, ChatList;
 
-    private DatabaseReference Ref;
+    DatabaseReference Ref;
     private String name;
     private String studentName;
 
@@ -87,7 +86,7 @@ public class Messages extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Messages.this);
                 builder.setTitle("Message");
-                builder.setMessage(user.getChatMessages().get(position).prineMsg());
+                builder.setMessage(user.getChatMessages().get(position).printMsg());
                 builder.setPositiveButton("Delete Message?", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         user.getChatMessages().remove(user.getChatMessages().get(position));

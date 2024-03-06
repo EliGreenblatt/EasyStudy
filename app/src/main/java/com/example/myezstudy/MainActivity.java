@@ -10,7 +10,10 @@ import android.widget.Button;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseApp;
-
+/**
+ * Main activity class.
+ * Handles user login and registration.
+ */
 public class MainActivity extends AppCompatActivity {
     Button LoginButton, RegisterButton;
     TextInputLayout UsernameLog, PasswordLog;
@@ -49,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 // Check if it's a teacher or student
-               EasyStudy.checkUserExists(UsernameLog.getEditText().getText().toString(), PasswordLog.getEditText().getText().toString()
-                        , MainActivity.this, new EasyStudy.UserTypeCallback() {
+               EasyStudy.checkUserExists(UsernameLog.getEditText().getText().toString(),
+                       MainActivity.this, new EasyStudy.UserTypeCallback() {
                     @Override
                     public void onUserType(EasyStudy.UserType userType, int i) {
                         // Determine the user type based on the integer i
